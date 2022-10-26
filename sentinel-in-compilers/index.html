@@ -1,0 +1,276 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">算法 - 编译原理中的哨兵标记</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2022-08-09 / 3 min read
+        </div>
+        
+        <div class="post-content yue">
+          <p>内容选自《编译原理》龙书第 2 版 72 页。</p>
+<p>编译大型源程序时需要处理大量字符，其需要很多时间，因此引入了一些特殊的缓冲技术来减少用于处理单个输入字符的时间开销。一种重要的机制就是利用两个交替读入的缓冲区。</p>
+<p>每个缓冲区的容量都是 N 个字符，通常 N 是一个磁盘块的大小，比如 4096 字节。我们可以一次性将 N 个字符读入到缓冲区。如果输入文件中的剩余字符不足 N 个，则会有一个特殊字符（用 eof 表示）来标记源文件结束。</p>
+<p>程序为输入维护 2 个指针：</p>
+<ul>
+<li>lexemeBegin 指针：指向当前词素的开始处</li>
+<li>forward 指针：一直向前扫描，直到发现某个模式被匹配为止</li>
+</ul>
+<p>一旦确定了下一个词素，forward 指针将指向该词素结尾的字符。词法分析器将这个词素作为词法单元的属性值纪录下来，而该词法单元会返回给语法分析器。然后使 lexemeBegin 指针指向刚刚找到的词素之后的第一个字符。</p>
+<p>将 forward 指针前移要求我们首先检查是否已经到达某个缓冲区的末尾。如果是，则必须将 N 个新字符读到另一个缓冲区中，且将 forward 指针指向这个新载入字符的缓冲区的头部。只要我们从不需要越过实际词素向前看很远，以至于这个词素的长度加上向前看的距离大于 N，我们就绝不会在识别这个词素之前覆盖掉这个尚在缓冲区的词素。</p>
+<p>按照以上方案，在每次移动 forward 指针时，都必须检查是否到达了缓冲区的末尾。因此每次读入一个字符，都需要座两次测试：</p>
+<ul>
+<li>检查是否到达缓冲区末尾</li>
+<li>确定读入的字符是什么</li>
+</ul>
+<p>假如我们扩展每个缓冲区，使它们在末尾包含一个“哨兵（sentinel）”字符，就可以把对缓冲区末端的测试和对当前字符的测试合二为一。该哨兵字符必须是一个不会在源程序中出现的特殊字符，一个自然选择就是eof，但是它仍然可以标记整个输入的结尾。</p>
+<blockquote>
+<p>词法单元：是一个表示某种词法单位的抽象符号，比如特定的关键字，或代表标识符的输入字符序列。由一个词法单元名和一个可选的属性值组成。<br>
+模式：描述了词法单元的词素可能具有的形式。<br>
+词素：源程序中的一个字符序列，它和某个词法单元的模式匹配，并被词法分析器识别为该词法单元的一个实例。</p>
+</blockquote>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/suan-fa/">
+            <span class="flex-auto">算法</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/kmp/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  算法 - KMP 文本搜索
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/structure-array/">
+                <h3 class="post-title">
+                  数据结构 - 数组
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

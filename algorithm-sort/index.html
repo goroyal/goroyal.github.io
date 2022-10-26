@@ -1,0 +1,448 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F">插入排序</a>
+<ul>
+<li><a href="#%E6%80%9D%E6%83%B3">思想</a></li>
+<li><a href="#%E5%88%86%E6%9E%90">分析</a></li>
+<li><a href="#%E5%AE%9E%E7%8E%B0">实现</a></li>
+</ul>
+</li>
+<li><a href="#%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F">冒泡排序</a>
+<ul>
+<li><a href="#%E6%80%9D%E6%83%B3-2">思想</a></li>
+<li><a href="#%E5%88%86%E6%9E%90-2">分析</a></li>
+<li><a href="#%E5%AE%9E%E7%8E%B0-2">实现</a></li>
+</ul>
+</li>
+<li><a href="#%E7%9B%B4%E6%8E%A5%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F">直接选择排序</a></li>
+<li><a href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F">归并排序</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">算法 - 排序</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2022-06-01 / 8 min read
+        </div>
+        
+        <div class="post-content yue">
+          <h2 id="插入排序">插入排序</h2>
+<h3 id="思想">思想</h3>
+<p>插入排序就是将一个数据插入到已经排好序的有序数据中，从而得到一个新的、数量加一的有序数据。它类似于玩扑克牌时的抓牌过程：每拿一张牌将其插入到手里排好序的牌中，使其保持有序。</p>
+<p>插入算法把要排序的数组分成两部分：已排序部分、未排序部分。每一轮排序都是从未排序部分取出一个元素插入到已排序部分的合适位置，初始的已排序部分只有一个元素。由于插入排序发生在数组中，在找到合适的插入位置后，需要先移动该位置及之后的元素，将它腾出来放待插入元素。</p>
+<p>假设待排序数组为<code>4, 2, 6, 3, 7, 1</code>，它的排序过程为：<br>
+<img src="https://goroyal.github.io/post-images/insert-sort.png" alt="insert sort" loading="lazy"></p>
+<h3 id="分析">分析</h3>
+<ul>
+<li>空间复杂度：排序过程不需要额外申请辅助空间，空间复杂度为<code>O(1)</code></li>
+<li>时间复杂度：
+<ul>
+<li>最好情况：完全正序时，不需要移动元素，每个元素分别和已排序部分最后元素进行一次比较，时间复杂度为<code>O(n)</code></li>
+<li>最差情况：完全逆序时，每次都需要将已排序部分的全部元素往后移动，以腾出第一个位置插入元素，时间复杂度为<code>O(n^2)</code></li>
+<li>平均情况：每次在已排序部分寻找合适的插入位置的平均时间复杂度为<code>O(n)</code>，进行n次循环，总体平均复杂度为<code>O(n^2)</code></li>
+</ul>
+</li>
+<li>适用性：由于插入排序伴随着大量的数组元素移动，仅适用于少量数据的情况</li>
+<li>稳定性：对于值相同的数据，可以选择将先出现的数据保持在后出现的数据之前，这样数据的前后顺序不变，插入排序是稳定排序</li>
+</ul>
+<h3 id="实现">实现</h3>
+<pre><code class="language-python"># 插入排序
+def insert_sort(lists):
+	count = len(lists)
+	
+	for i in range(1, count):
+		key = lists[i]
+		j = i - 1
+		while j &gt;= 0:
+			if lists[j] &gt; key:
+				lists[j + 1] = lists[j]
+				lists[j] = key
+				j -= 1
+	 return lists
+</code></pre>
+<h2 id="冒泡排序">冒泡排序</h2>
+<h3 id="思想-2">思想</h3>
+<p>冒泡排序的基本思想是将元素进行两两比较，将较大（或者较小）的元素往右交换，每一轮排序结束后，最后的元素将是最大的那个。然后除了已经冒出来的最大元素，再重复进行刚刚的步骤。</p>
+<h3 id="分析-2">分析</h3>
+<ul>
+<li>空间复杂度：排序过程不需要额外申请辅助空间，空间复杂度为<code>O(1)</code></li>
+<li>时间复杂度：
+<ul>
+<li>最好情况：完全正序时，只需要一轮循环进行两两比较，不需要交换，时间复杂度为<code>O(n)</code></li>
+<li>最差情况：完全逆序时，每轮循环都要把最左边的元素逐个交换到最右边，时间复杂度为<code>O(n^2)</code></li>
+<li>平均情况：每轮循环中，需要两两比较的平均复杂度为<code>O(n)</code>，因此总体平均时间复杂度为<code>O(n^2)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="实现-2">实现</h3>
+<pre><code class="language-Python"># 冒泡排序
+def bubble_sort(lists):
+	count = len(lists)
+	for i in range(0, count):
+		for j in range(i, count - i):
+			if lists[j] &gt; lists[i]:
+				lists[i], lists[j] = lists[j], lists[i]
+	return lists
+</code></pre>
+<h2 id="直接选择排序">直接选择排序</h2>
+<p>基本思想：第1趟，在待排序记录r1 ~ r[n]中选出最小的记录，将它与r1交换；第2趟，在待排序记录r2 ~ r[n]中选出最小的记录，将它与r2交换；以此类推，第i趟在待排序记录r[i] ~ r[n]中选出最小的记录，将它与r[i]交换，使有序序列不断增长直到全部排序完毕。</p>
+<pre><code class="language-Python"># 选择排序
+def select_sort(lists):
+	count = len(lists)
+	for i in range(0, count):
+		min = i
+		for j in range(i + 1, count):
+			if lists[min] &gt; lists[j]:
+				min = j
+		lists[min], lists[i] = lists[i], lists[min]
+return lists
+</code></pre>
+<h2 id="归并排序">归并排序</h2>
+<p>归并排序是建立在归并操作上的一种有效的排序算法,该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。将已有序的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并成一个有序表，称为二路归并。</p>
+<p>归并过程为：比较a[i]和a[j]的大小，若a[i]≤a[j]，则将第一个有序表中的元素a[i]复制到r[k]中，并令i和k分别加上1；否则将第二个有序表中的元素a[j]复制到r[k]中，并令j和k分别加上1，如此循环下去，直到其中一个有序表取完，然后再将另一个有序表中剩余的元素复制到r中从下标k到下标t的单元。归并排序的算法我们通常用递归实现，先把待排序区间[s,t]以中点二分，接着把左边子区间排序，再把右边子区间排序，最后把左区间和右区间用一次归并操作合并成有序的区间[s,t]。</p>
+<p>Python实现：</p>
+<pre><code class="language-Python">def merge(left, right):
+	 i, j = 0, 0
+	 result = []
+	 while i &lt; len(left) and j &lt; len(right):
+		if left[i] &lt;= right[j]:
+			result.append(left[i])
+			i += 1
+		 else:
+			result.append(right[j])
+			j += 1
+
+	 result += left[i:]
+	 result += right[j:]
+	 return result
+
+
+# 归并排序
+def merge_sort(lists):
+	if len(lists) &lt;= 1:
+		return lists
+	num = len(lists) / 2
+	left = merge_sort(lists[:num])
+	right = merge_sort(lists[num:])
+ return merge(left, right)
+</code></pre>
+<pre><code class="language-Java">public class MergeSortMain {
+	/**
+	 * 归并所需要的辅助数组
+	 */
+	private static Comparable[] aux;
+	public static void sort(Comparable[] array){
+		aux= new Comparable[array.length]; //一次性分配空间
+		sort(array, 0 ,array.length-1);
+	}
+
+	/**
+	* 自底向上的归并
+	* @param array
+	*/
+	public static void sort2(Comparable[] array){
+		//进行lg(length)次两两归并
+		int length = array.length;
+		aux = new Comparable[length];
+		for (int sz=1; sz &lt; length; sz=sz+sz){
+			for (int low = 0; low &lt; length-sz; low += sz+sz){
+				merge(array,low,low+sz-1,Math.min(low+sz+sz-1,length-1));
+			}
+		}
+	}
+	/**
+	 * 自顶向下的归并排序，分治，基于原地归并做的递归
+	 * @param array
+	 * @param low
+	 * @param high
+	 */
+	private static void sort(Comparable[] array, int low, int high){
+		if(high &lt; low)
+			return;
+		int mid = low +(high-low)/2;
+		sort(array, low, mid);
+		sort(array, mid+1, high);
+		merge(array, low, mid, high);
+	 }
+
+	/**
+	  * 原地归并的抽象方法
+	  * 将涉及的所有元素复制到一个辅助数组中，再把归并的结果放回原数组中
+	  * @param orignialArray
+	  * @param low
+	  * @param mid
+	  * @param high
+	  */
+	private static void merge(Comparable[] orignialArray, int low, int mid, int high) {
+	  // 将a[low..mid]和a[mid+1..high]归并
+		int i = low, j = mid+1;
+		for (int k = low; k&lt;=high ;k++){// 将orignialArray[low..high]复制到aux[low..high]
+			aux[k] = orignialArray[k];
+		}
+		for (int k = low; k&lt;=high; k++){//归并回到originalArray[low..high]
+			if (i &gt; mid){//左边的数组元素已经全部放进去了
+				orignialArray[k] = aux[j++];
+		   } else if (j &gt; high){//右边的数组元素已经全部放进去了
+				orignialArray[k] = aux[i++];
+		   } else if (isLess(aux[j], aux[i])){//如果第j个数比第i个数小，则把第j个数放进数组，j加1
+				orignialArray[k] = aux[j++];
+	   } else {//如果第i个数比第j个数小，则把第i个数放进数组，i加1
+			orignialArray[k] = aux[i++];
+	   }
+	}
+}
+
+	private static boolean isLess(Comparable i, Comparable j) {
+		return i.compareTo(j) &lt; 0;
+	}
+}
+</code></pre>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/suan-fa/">
+            <span class="flex-auto">算法</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/hbase/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  HBase
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/void-pointer/">
+                <h3 class="post-title">
+                  void指针
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

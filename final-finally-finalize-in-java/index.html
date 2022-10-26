@@ -1,0 +1,314 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#final">final</a></li>
+<li><a href="#finally">finally</a></li>
+<li><a href="#finalize">finalize</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90">参考资源</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Java中的final、finally和finalize</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2017-05-03 / 5 min read
+        </div>
+        
+        <div class="post-content yue">
+          <h2 id="final">final</h2>
+<p>final是Java里面的一个关键字，可以用来修饰成员变量、局部变量、类、方法。</p>
+<p>final修饰的类不能被继承，比方说String，Integer以及其他包装类。</p>
+<p>final修饰的方法不能被重写。</p>
+<p>final修饰的基本类型变量不可以被修改，修饰的其他类型变量的引用不能被修改。也就是说如果<code>final int a=10</code>，那么这个<code>a</code>变量以后就不能再给它赋值成别的值了。而修饰的非基本类型变量的话，该变量的引用指向的堆里面的内容是可以修改的，比如说：</p>
+<pre><code class="language-Java">final List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+list.add(&quot;item1&quot;);
+list.add(&quot;item2&quot;);
+</code></pre>
+<p>上述操作是合法的。</p>
+<p>final修饰的String类型再第一次赋值之后，也不能再重新赋值了，因为不管是采用下面哪种方式创建的String对象，如果再次赋值，该对象指向的引用就会变化。</p>
+<pre><code class="language-Java">final String string1 = new String(&quot;string1&quot;);
+final String string2 = &quot;string2&quot;;
+</code></pre>
+<p>另外，匿名内部类如果需要用到外面的局部变量，该变量必须是final类型。</p>
+<p>final修饰局部变量时，局部变量必须在声明时就赋值。</p>
+<p>没有在声明时初始化的final成员变量的称为空白final变量(blank final variable)，它们必须在构造器中初始化，或者调用this()初始化。不这么做的话，编译器会报错“final变量(变量名)需要进行初始化”。</p>
+<p>接口中的声明的变量始终都是 <code>publis static final</code> 类型的。</p>
+<h2 id="finally">finally</h2>
+<p>finally用于在异常处理时处理一些收尾工作，比方说输入输出流、JDBC数据库连接打开后不管成功成功还是失败，都要将其关闭，释放资源。常用格式：</p>
+<pre><code class="language-Java">try{
+  ......
+}catch (Exception e){
+  ......
+}finally {
+  ......
+}
+</code></pre>
+<h2 id="finalize">finalize</h2>
+<p>finalize是Object类中定义的方法，用于垃圾回收。Object类中该方法的定义如下：</p>
+<pre><code class="language-Java">protected void finalize() throws Throwable { }
+</code></pre>
+<p>当对某个对象垃圾收集确定没有更多引用时被垃圾收集器调用。子类重写<code>finalize</code>方法来处理系统资源或者做其他清理工作。</p>
+<p>一般来说，finalize方法都是在Java虚拟机发现去除那些已经被执行了finalize的对象之外，没有任何活动的线程能够引用到该对象的时候调用。finalize方法可以做任何事情，包括使这个对象可以被其他进程访问；但是通常finalize的目的是在对象被真正回收之前做一些清理工作。例如，一个对象的finalize方法表示输入/输出连接可能在对象被永久回收前执行显式I/O事务来中断连接。</p>
+<p><code>Object</code>类的finalize方法不执行特别的操作，它只是简单地返回。<code>Object</code>子类可以重写这个方法。</p>
+<p>Java编程语言不保证对于任何给定的对象哪个线程将调用finalize方法，但是它保证执行finalize的线程在调用finalize方法后不会一直保持任何用户可见的同步锁。如果finalize方法中抛出一个没有catch的异常，这个异常将会被忽略并且对象的finalize将终止。</p>
+<p>在启用某个对象的 finalize 方法后，将不会执行进一步操作，直到 Java 虚拟机再次确定尚未终止的任何线程无法再通过任何方法访问此对象，其中包括由准备终止的其他对象或类执行的可能操作，在执行该操作时，对象可能被丢弃。</p>
+<p>对于任何给定的对象，finalize最多被Java虚拟机执行一次。</p>
+<p>finalize方法抛出的任何异常将导致这个对象的终结操作停止，但也会被忽略。（抛出异常后，该对象还是不可以继续操作，不会影响其他对象，直到被虚拟机回收）</p>
+<p>建议尽量避免使用它，它不是C/C++中的析构函数，而是Java诞生时为了使c/c++程序员更容易接受它所做的一个妥协。它的运行代价高昂，不确定性大，无法保证各个对对象的调用顺序。虽然注释中描述它适合做“关闭外部资源”之类的工作，这完全是对这个方法用途的一种安慰，finalize()能做的所用工作，使用try-finally或者其他方式都可以做的更好，更及时。</p>
+<h2 id="参考资源">参考资源</h2>
+<p>JDK 1.7 源码</p>
+<p>Effective Java</p>
+<p>http://www.importnew.com/7553.html</p>
+<p>http://s1099.iteye.com/blog/1447714</p>
+<p>http://www.xuebuyuan.com/813760.html</p>
+<p>http://blog.csdn.net/cyp331203/article/details/44461021</p>
+<p>http://www.debugease.com/j2se/820363.html</p>
+<p>http://www.programgo.com/article/6855606134/</p>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/Ke7gk0EO5/">
+            <span class="flex-auto">Java</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/add-icon-to-ubuntu-dash/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  Ubuntu中给Dash创建图标
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/release-it-design-and-deploy-production-ready-software/">
+                <h3 class="post-title">
+                  发布！软件的设计与部署
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://goroyal.github.io</id>
+    <title>記路</title>
+    <updated>2022-10-26T14:25:34.184Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://goroyal.github.io"/>
+    <link rel="self" href="https://goroyal.github.io/atom.xml"/>
+    <subtitle>千里之行，始于足下。&lt;br/&gt;
+持续探索中……</subtitle>
+    <logo>https://goroyal.github.io/images/avatar.png</logo>
+    <icon>https://goroyal.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2022, 記路</rights>
+    <entry>
+        <title type="html"><![CDATA[影视 - 唐朝诡事录]]></title>
+        <id>https://goroyal.github.io/tang-dynasty-bizarre-anecdote/</id>
+        <link href="https://goroyal.github.io/tang-dynasty-bizarre-anecdote/">
+        </link>
+        <updated>2022-10-26T13:34:56.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[读书 - 月亮与六便士]]></title>
+        <id>https://goroyal.github.io/the-moon-and-sixpence/</id>
+        <link href="https://goroyal.github.io/the-moon-and-sixpence/">
+        </link>
+        <updated>2022-10-26T13:33:15.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[数据结构 - trie 树]]></title>
+        <id>https://goroyal.github.io/trie/</id>
+        <link href="https://goroyal.github.io/trie/">
+        </link>
+        <updated>2022-08-10T06:52:43.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[算法 - KMP 文本搜索]]></title>
+        <id>https://goroyal.github.io/kmp/</id>
+        <link href="https://goroyal.github.io/kmp/">
+        </link>
+        <updated>2022-08-10T06:51:31.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[算法 - 编译原理中的哨兵标记]]></title>
+        <id>https://goroyal.github.io/sentinel-in-compilers/</id>
+        <link href="https://goroyal.github.io/sentinel-in-compilers/">
+        </link>
+        <updated>2022-08-09T14:37:05.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[数据结构 - 数组]]></title>
+        <id>https://goroyal.github.io/structure-array/</id>
+        <link href="https://goroyal.github.io/structure-array/">
+        </link>
+        <updated>2022-06-08T12:53:42.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java 引用类型]]></title>
+        <id>https://goroyal.github.io/java-references/</id>
+        <link href="https://goroyal.github.io/java-references/">
+        </link>
+        <updated>2022-06-05T04:19:39.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[HBase]]></title>
+        <id>https://goroyal.github.io/hbase/</id>
+        <link href="https://goroyal.github.io/hbase/">
+        </link>
+        <updated>2022-06-05T04:03:43.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[算法 - 排序]]></title>
+        <id>https://goroyal.github.io/algorithm-sort/</id>
+        <link href="https://goroyal.github.io/algorithm-sort/">
+        </link>
+        <updated>2022-06-01T06:38:13.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[void指针]]></title>
+        <id>https://goroyal.github.io/void-pointer/</id>
+        <link href="https://goroyal.github.io/void-pointer/">
+        </link>
+        <updated>2022-06-01T01:22:52.000Z</updated>
+    </entry>
+</feed>

@@ -1,0 +1,332 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">常用的Git命令</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2020-08-02 / 4 min read
+        </div>
+        
+        <div class="post-content yue">
+          <p>配置账号信息</p>
+<pre><code class="language-shell">git config --global user.name &quot;your username&quot;
+git config --global user.email &quot;your email&quot;
+</code></pre>
+<p>查看配置相关的信息</p>
+<pre><code class="language-shell">git config --list # 查看配置的信息
+git help config # 获取帮助信息
+</code></pre>
+<p>配置自动换行</p>
+<pre><code class="language-shell">git config --global core.autocrlf input # 提交到git时是否自动将换行符转换为lf
+</code></pre>
+<p>配置密钥</p>
+<pre><code class="language-shell">ssh-keygen -t rsa -C &quot;your email&quot; # 生成密钥
+ssh -T git@github.com # 测试是否成功
+</code></pre>
+<p>新建仓库</p>
+<pre><code class="language-shell">git init # 初始化本地仓库
+git clone &lt;url&gt; # 克隆远程版本库
+git add –all # 添加所有文件到暂存区（stage，index）
+git status # 查看当前git状态
+git remote add origin https://github.com/freshdgq/test.git # 关联到远程仓库地址
+git push -u origin master # 第一次推送master分支的所有内容
+</code></pre>
+<p>修改和提交</p>
+<pre><code class="language-shell">git status # 查看git当前状态
+git diff # 查看改动后和改动前的不同之处
+git add . # 跟踪所有改动过的文件
+git add &lt;file&gt; # 跟踪指定的文件
+git mv &lt;old&gt; &lt;new&gt; # 文件改名
+git rm &lt;file&gt; # 删除指定文件
+git rm --cached &lt;file&gt; # 停止跟踪文件但不删除
+git commit -m &quot;message&quot; # 提交修改的文件到当前分支
+git commit --amend # 修改最后一次提交
+</code></pre>
+<p>状态与版本处理</p>
+<pre><code class="language-shell">git log # 查看提交的历史记录
+git log -p &lt;file&gt; # 查看指定文件的提交记录
+git blame &lt;file&gt; # 以列表方式查看指定文件的提交历史
+git reset --hard HEAD  # 撤销工作目录中所有未提交文件的修改内容
+git checkout HEAD &lt;file&gt; # 撤销指定的未提交文件的修改内容
+git revert &lt;commit&gt; 撤销指定的提交
+git reset --hard HEAD^ # 回退本地分支到上一个版本
+git reset --hard HEAD~n # 回退本地分支到上n个版本
+git checkout – readme.txt # 把readme.txt文件在工作区的修改全部撤销
+</code></pre>
+<p>分支与标签处理</p>
+<pre><code class="language-shell">git branch # 查看本地所有分支
+git checkout &lt;branch/tag&gt; # 切换到指定分支或标签
+
+git branch &lt;new-branch&gt; # 创建新分支
+git checkout -b &lt;new-branch&gt; # 创建并切换到新分支
+git branch -d &lt;branch&gt; # 删除本地分支
+
+git merge &lt;branch&gt; # 合并指定分支到当前分支
+git rebase &lt;branch&gt; # 衍合指定分支到当前分支
+
+git tag # 列出所有本地标签
+git tag &lt;tagname&gt; # 基于最新提交创建标签
+git tag -d &lt;tagname&gt; # 删除标签
+</code></pre>
+<p>本地远程</p>
+<pre><code class="language-shell">git remote # 获得远程库列表
+git remote v # 查看远程版本库信息
+git remote show &lt;remote&gt; # 查看指定远程版本库信息
+git remote add &lt;remote&gt;&lt;url&gt; # 添加远程版本库
+git remote rm &lt;name&gt; # 删除对应的远程库
+git branch -u origin/master master # 本地跟踪远程
+
+git fetch &lt;remote&gt; # 从远程库获取代码
+git pull &lt;remote&gt;&lt;branch&gt; # 拉取远程指定分支代码并快速合并
+git push &lt;remote&gt;&lt;branch&gt; # 推送代码到远程指定分支并快速合并
+git push &lt;remote&gt;:&lt;branch/tag-name&gt; # 删除远程分支或标签
+git push --tags # 上传所有标签
+
+git pull origin master # 从远程的master分支拉取代码到本地
+git push origin master # 推送最新修改到远程的主分支
+</code></pre>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/5boyAOfFj/">
+            <span class="flex-auto">Version Control</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/java-synchronized/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  Java synchronized
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/execute-script-in-web-page/">
+                <h3 class="post-title">
+                  网页里面引起脚本执行的方式
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

@@ -1,0 +1,391 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#linux-%E8%BF%9B%E7%A8%8B">Linux 进程</a></li>
+<li><a href="#%E9%87%8D%E5%AE%9A%E5%90%91">重定向</a>
+<ul>
+<li><a href="#%E7%AE%A1%E9%81%93">管道</a></li>
+</ul>
+</li>
+<li><a href="#2-devnull">2&gt; /dev/null</a>
+<ul>
+<li><a href="#%E6%9B%B4%E5%A4%9A%E7%94%A8%E6%B3%95">更多用法</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Linux 中的 2&gt; /dev/null</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2020-05-21 / 5 min read
+        </div>
+        
+        <div class="post-content yue">
+          <p>本文亦发布于<a href="https://thinkbucket.cn/blog/2020/05/21/linux-redirect-dev-null">ThinkBucket</a>。<br>
+在 Linux 的 shell 命令或者脚本中，我们经常看到这样的命令：</p>
+<pre><code class="language-shell">2&gt; /dev/null
+</code></pre>
+<p>这是何意？</p>
+ <!-- more --> 
+<h2 id="linux-进程">Linux 进程</h2>
+<p>以 bash 为例，shell 中执行一个命令时，其实是由 bash shell fork 出一个子进程，然后在这个子进程中运行相应的命令，直至退出。Linux 里的进程的数据结构如下：</p>
+<pre><code class="language-C">struct task_struct {
+	// 进程状态
+	long state;
+	// 虚拟内存结构体
+	struct mm_struct *mm;
+	// 进程号
+	pid_t pid;
+	// 指向父进程的指针
+	struct task_struct __rcu *parent;
+	// 子进程列表
+	struct list_head children;
+	// 存放文件系统信息的指针
+	struct fs_struct *fs;
+	// 一个数组，包含该进程打开的文件指针
+	struct files_struct *files;
+};
+</code></pre>
+<p><code>task_struct</code> 就是 Linux 对于一个进程的描述，也可以称之为进程描述符。其中的 <code>files</code> 指针指向一个数组，表示当前进程打开的所有文件。</p>
+<p><strong>每个进程被创建时，<code>files</code> 指向的数组前三位被填入默认值，分别指向标准输入流、标准输出流、标准错误流。我们常说的「文件描述符」就是指这个文件指针数组的索引，所以程序的文件描述符默认情况下 0 是输入，1 是输出，2 是错误。</strong></p>
+<p><strong>提示：</strong></p>
+<blockquote>
+<p>Linux 中的所有设备都是抽象成文件的，设备可以当作文件一样读和写。</p>
+</blockquote>
+<p>上述所说的文件描述符如下表：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>文件描述符</th>
+<th>默认情况</th>
+<th>对应文件句柄位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标准输入（standard input）</td>
+<td>0</td>
+<td>从键盘获得输入</td>
+<td>/proc/slef/fd/0</td>
+</tr>
+<tr>
+<td>标准输出（standard output）</td>
+<td>1</td>
+<td>输出到屏幕（即控制台）</td>
+<td>/proc/slef/fd/1</td>
+</tr>
+<tr>
+<td>错误输出（error output）</td>
+<td>2</td>
+<td>输出到屏幕（即控制台）</td>
+<td>/proc/slef/fd/2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="重定向">重定向</h2>
+<p>Linux shell 里通过 <code>&gt;</code>、<code>&lt;</code>进行输出、输入的重定向。</p>
+<ul>
+<li><code>&gt;</code>：将 shell 命令的输出指向某个地方，可以是文件，也可以是内存里的某个变量。比如 <code>ls -l &gt; file.txt</code> 就是把当前路径下的文件信息保存到 file.txt 文本中，如果没有这个重定向，它会将结果输出到显示器屏幕上。</li>
+<li><code>&lt;</code>：从某个地方读取内容作为 shell 命令的输入，可以是文件，也可以是内存里的某个变量。比如 <code>{command} &lt; file.txt</code>，如果没有这个重定向，它会从键盘读取输入。</li>
+</ul>
+<p>当使用<code>&gt;</code>进行输出重定向时，默认是把某个命令的标准输出进行重定向。</p>
+<pre><code class="language-shell"># 把标准输出重定向到新文件中
+command &gt;filename
+
+# 把标准输出重定向到新文件中
+command 1&gt;filename
+
+# 把标准错误重定向到新文件中
+command 2&gt;filename
+</code></pre>
+<p>当使用<code>&lt;</code>进行输入重定向时，默认时把它右边的内容作为标准输入。</p>
+<pre><code class="language-shell"># 以filename文件作为标准输入
+command &lt;filename
+
+# 以filename文件作为标准输入
+command 0&lt;filename
+
+# 从标准输入中读入，直到遇到delimiter分隔符
+command &lt;&lt;delimiter
+</code></pre>
+<h3 id="管道">管道</h3>
+<p>shell 还可以通过 <code>|</code> 这样的管道将前一个命令的输出作为下一个命令的输入，比如：</p>
+<pre><code class="language-shell"># 在命令历史中找到包含 ssh 字符串的命令
+history | grep ssh
+</code></pre>
+<h2 id="2-devnull">2&gt; /dev/null</h2>
+<p>通过上面的章节可以知道，<code>2</code> 表示标准错误，<code>&gt;</code> 表示将标准错误重定向到某个地方。</p>
+<p><code>/dev/null</code> 是一个特殊文件，在Unix系统中称为 null 设备。 通俗地说，它也称为比特桶（bit bucket，也译作比特垃圾桶）或黑洞（blackhole），因为它会立即丢弃写入其中的任何内容，并且在读取时仅返回文件结束EOF。</p>
+<p>所以这个命令合起来就是将忽略执行命令产生的错误。比如：</p>
+<pre><code class="language-shell"># 删除当前路径下的folder目录，如果不存在则忽略错误
+rm -r folder 2&gt; /dev/null
+</code></pre>
+<p><strong>注意：</strong></p>
+<blockquote>
+<p><code>2</code>和<code>&gt;</code>之间不能有空格</p>
+</blockquote>
+<h3 id="更多用法">更多用法</h3>
+<p><code>2&gt;&amp;1</code>：将错误输出绑定到标准输出上。由于此时的标准输出是默认值，也就是输出到屏幕，所以错误输出会输出到屏幕。这种写法的好处是可以避免同样的输出文件的描述符不用打开两次，标准输出和错误输出也不会抢占性往文件输出内容。<br>
+<code>&gt; /dev/null</code>：将标准输出1重定向到<code>/dev/null</code>中。<br>
+<code>&gt; /dev/null 2&gt;&amp;1</code>：就是让标准输出和错误输出重定向到<code>/dev/null</code>中（就是所有输出都丢弃了）。错误输出由于重用了标准输出的描述符，所以错误输出也被定向到了<code>/dev/null</code>中，错误输出同样也被丢弃了。执行了这条命令之后，该条shell命令将不会输出任何信息到控制台，也不会有任何信息输出到文件中。<br>
+<code>2&gt;&amp;1 &gt;/dev/null</code>：标准输出丢弃，错误输出显示在屏幕上。</p>
+<p>我们会用<code>nohup</code>命令在后台启动Java程序，为了不让一些执行信息输出到控制台，会用如下命令丢弃输出：</p>
+<pre><code class="language-shell">nohup java -jar xxxx.jar &gt;/dev/null 2&gt;&amp;1 &amp;
+</code></pre>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://bash.cyberciti.biz/guide/What_is_a_Process%3F">What is a Process?</a></li>
+<li><a href="https://github.com/labuladong/fucking-algorithm/blob/master/%E6%8A%80%E6%9C%AF/linux%E8%BF%9B%E7%A8%8B.md">Linux的进程、线程、文件描述符是什么</a></li>
+<li><a href="https://zh.wikipedia.org/wiki//dev/null">维基百科：/dev/null</a></li>
+</ul>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/R38FKKbZc/">
+            <span class="flex-auto">Linux</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/array-and-linkedlist/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  【数据结构】数组和链表
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/oop-and-pure-function/">
+                <h3 class="post-title">
+                  面向对象编程与纯函数
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

@@ -1,0 +1,326 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li><a href="#%E6%A6%82%E8%A7%88">概览</a>
+<ul>
+<li><a href="#msbuild%E7%9A%84%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5">MSBuild的相关概念</a>
+<ul>
+<li><a href="#properties">Properties</a></li>
+<li><a href="#items">Items</a></li>
+<li><a href="#targets">Targets</a></li>
+<li><a href="#tasks">Tasks</a></li>
+<li><a href="#special-characters">Special Characters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">MSBuild学习</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2020-08-03 / 3 min read
+        </div>
+        
+        <div class="post-content yue">
+          <p>MSBuild是.NET平台下的构建工具。</p>
+<h1 id="概览">概览</h1>
+<p>MSBuild也就是用于构建应用的Microsoft Build Engine，它提供一个XML Schema用于project文件来控制构建平台process、build软件。<br>
+可以使用Visual Studio或者调用MSBuild.exe来完成这个操作。VS里边的project文件（<code>.csproj</code>、<code>vbproj</code>、<code>vcxproj</code>等）包含MSBuild XML代码，这些代码将在使用IDE build project的时候被运行。</p>
+<p>在VS 2017里面使用的MSBuild版本是15，现在MSBuild装在VS的每个版本的文件夹中，比如<code>C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild</code>。也可以使用这个powershell命令来定位MSBuild：<a href="https://github.com/Microsoft/vssetup.powershell"><code>vssetup.powershell</code></a>。</p>
+<p><code>MSBuildToolsPath</code>不再是一个固定的位置。默认情况下将是相对于VS安装位置的<code>MSBuild\15.0\Bin</code>文件夹中。</p>
+<h2 id="msbuild的相关概念">MSBuild的相关概念</h2>
+<h3 id="properties">Properties</h3>
+<p>Properties是键值对，可以用来配置builds。</p>
+<pre><code class="language-XML">&lt;PropertyGroup&gt;
+    &lt;BuildDir&gt;Build&lt;/BuildDir&gt;
+&lt;/PropertyGroup&gt;
+</code></pre>
+<p>在整个project文件中，properties通过<code>$(&lt;PropertyName&gt;)</code>的方式被引用，比如使用上面的BuildDir属性，则用<code>$(BuildDir)</code>即可。<br>
+Properties的值可以被redefine。</p>
+<p>MSBuild中保留的或众所周知的properties：</p>
+<ul>
+<li><code>MSBuildBinPath</code>: 当前使用的MSBuild binaries位置的绝对路径，例如<code>C:\Windows\Microsoft.Net\Framework\&lt;versionNumber&gt;</code></li>
+<li><code>MSBuildExtensionsPath</code></li>
+<li><code>MSBuildProjectFile</code>: project文件的完整文件名，例如<code>MyApp.proj</code></li>
+</ul>
+<p>完整的见<a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-reserved-and-well-known-properties?view=vs-2017">MSBuild reserved and well-known properties</a></p>
+<p>可以使用<code>Condition</code> attribute来为一个property提供默认值，如果这个property没有value则给它设置一个。比如</p>
+<pre><code class="language-XML">&lt;ToolsPath Condition=&quot;''$(TOOLSPATH)' == ''&quot;&gt;c:\tools&lt;/ToolsPath&gt;
+</code></pre>
+<p>除了在project文件中做配置，也可以在命令行执行的时候设置property。如：</p>
+<pre><code class="language-shell">msbuild file.proj -property:Flavor=Debug
+msbuild file.proj -p:Flavor=Debug
+msbuild file.proj -p:Flavor=Debug;Platform=x86
+msbuild file.proj -p:Flavor=Debug -p:Platform=x86
+</code></pre>
+<p>环境变量也会被认为是properties，并且自动被MSBuild装载进来。</p>
+<h3 id="items">Items</h3>
+<p>Items是build system的输入，通常代表文件。</p>
+<pre><code class="language-XML">&lt;ItemGroup&gt;
+    &lt;Compile Include = &quot;file1.cs&quot;/&gt;
+    &lt;Compile Include = &quot;file2.cs&quot;/&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+<p>file2.cs是append在file1.cs之后的，也可以结合<code>**</code>、<code>*</code>、<code>？</code>用wildcard模式，例如：</p>
+<pre><code class="language-XML">&lt;CSFile Include=&quot;*.cs&quot;/&gt;
+或者
+&lt;ItemGroup&gt; 
+    &lt;CSFile Include=&quot;*.cs&quot; Exclude=&quot;DoNotBuild.cs&quot;/&gt;
+&lt;/ItemGroup&gt;
+</code></pre>
+<h3 id="targets">Targets</h3>
+<p>解释如何将tasks以特定的顺序组合到一起，并在命令行调用构建过程的各个部分。<br>
+感觉类似Ant的targets。详细的见<a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild-targets?view=vs-2017">MSBuild targets</a></p>
+<h3 id="tasks">Tasks</h3>
+<p>显示如何创建可以被MSBuild使用的可执行代码单元去执行原子的build操作。</p>
+<h3 id="special-characters">Special Characters</h3>
+<p>% $ @ ' ; ? *</p>
+<h1 id="参考">参考</h1>
+<p><a href="https://docs.microsoft.com/en-us/visualstudio/msbuild/msbuild?view=vs-2017">微软官方文档：MSBuild</a></p>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/ZbecWX-__/">
+            <span class="flex-auto">.NET</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/csharp-same-class-name-namespace-diff-source/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  C#中引入的class命名空间相同但是source不同的问题解决
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/inverted-index/">
+                <h3 class="post-title">
+                  Inverted Index
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

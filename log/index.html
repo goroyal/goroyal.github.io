@@ -1,0 +1,355 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%BC%95%E8%A8%80">引言</a></li>
+<li><a href="#%E4%B8%80%E8%87%B4%E6%80%A7">一致性</a></li>
+<li><a href="#%E7%AE%80%E6%B4%81">简洁</a></li>
+<li><a href="#%E6%9C%89%E7%94%A8">有用</a></li>
+<li><a href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%B0%E5%AF%8C">上下文丰富</a></li>
+<li><a href="#%E4%B8%8A%E4%B8%8B%E6%96%87%E8%AF%86%E5%88%AB">上下文识别</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Web开发中的日志</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2020-12-11 / 6 min read
+        </div>
+        
+        <div class="post-content yue">
+          <h2 id="引言">引言</h2>
+<p>在Web开发中，日志主要是用来做：</p>
+<ul>
+<li>问题分析和研究</li>
+<li>监控系统活动</li>
+<li>监控系统状态变化</li>
+</ul>
+<p>Web应用里的所有日志必须是一致的、简洁的，有丰富的上下文且有相应的标识。</p>
+<p><strong>常见的日志架构标准和准则：</strong></p>
+<ul>
+<li>使用日志框架或集于日志框架的抽象，不要用STDOUT或者STDERR。
+<ul>
+<li>包括e.printStackTrace()这样的代码，它会输出到标准错误流中。</li>
+</ul>
+</li>
+<li>使用一致的格式</li>
+<li>简明扼要地使用上下文使用和意图信息足够清晰之间平衡</li>
+<li>输出到生产环境的日志必须对潜在的看到日志输出的受众有用</li>
+<li>正确且一致地使用日志级别</li>
+<li>在INFO或更高级别上的日志输出对其他人必须有用。他们可以从日志得到什么信息？或者他们根据日志需要采取什么行为？</li>
+<li>在任何日志级别都不能输出敏感个人用户数据。</li>
+<li>不要对异常记录日志然后重新抛出去。抛出一个异常（或者包装一下原始异常然后抛出去）已经足够了。抓住异常且不再抛出去的代码需要做日志。</li>
+</ul>
+<h2 id="一致性">一致性</h2>
+<p>日志的一致性可以应用在所有方面，这里所说的一致性主要说的是格式。在一个应用里，日志输出的格式应该是一致的，理想情况下应该跨应用套件和服务/组件套件。这可以使得索引更加容易，也帮助人眼和大脑扫描模式和寻找信息。<br>
+日志输出的格式应该包括：日期/时间、日志级别、日志上下文、信息和关联数据（在有用的地方包含stacktraces）<br>
+不同的日志类型可能会要求不同的格式。比如应用日志、访问日志、垃圾回收日志、类加载器日志等。</p>
+<h2 id="简洁">简洁</h2>
+<p>日志输出不便宜。它需要消耗时间和资源去创建、格式化、流式化、存储、索引、处理。尽管现代日志框架非常擅于从同步的应用处理过程中消除这些消耗，但是这些成本还是存在的。（比如Log4J异步日志功能可以「节省」性能开销，但是如果在刷新日志缓冲区之间进程被杀死或者挂掉，那么日志数据可能丢失）<br>
+日志必须简洁明了，输出的内容不应该超过达到日志目的所需的内容。这是一个公认的棘手的平衡，因为日志天生就是用来传达将来可能有用的信息。这里有一些准则：</p>
+<ul>
+<li>不要对同样的东西记录多次日志。这似乎很明显，但是通常有人记录异常后将其再次抛出去，然后被记录调用栈。</li>
+<li>不要在INFO级别记录trace或debug的数据。</li>
+<li>不要为了针对一个可能的错误保护自己而记录日志为INFO级别。相反的是，你应该抓住这个错误案例并在那个时候把全部上下文记录下来。</li>
+</ul>
+<h2 id="有用">有用</h2>
+<p>主要是针对日志级别。</p>
+<table>
+<thead>
+<tr>
+<th>日志级别</th>
+<th>描述</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TRACE</td>
+<td>代码执行的细节，为了帮助你和其他人更好地理解JVM在做什么、代码执行某项步骤耗时等。受众仅仅是开发者——大多数情况下在生产环境从来没打开过</td>
+<td>方法调用、计时/microbenchmarking、代码执行waypoints</td>
+</tr>
+<tr>
+<td>DEBUG</td>
+<td>代码执行实现层面的细节，为了帮助你和他人理解代码如何处理一些输入以及产生了什么输出。受众是开发者，也可能是售后支持。大多数情况下不会在生产环境打开，一些异常情况下可能会临时打开</td>
+<td>复杂逻辑流里的详细过程；跟踪变量值的变化；对方法计时；方法的输入输出等</td>
+</tr>
+<tr>
+<td>INFO</td>
+<td>高维度的“当前发生什么”信息。在任何时候都可以了解此级别的日志从而知道系统中正在发生哪些活动和重要的状态变化。受众包括运维/系统管理员</td>
+<td>配置、缓存或其他重要状态设置/变化、系统活动（计时器、任务/异步线程生命周期、用户请求）等</td>
+</tr>
+<tr>
+<td>WARN</td>
+<td>不是最终用户会看到的错误的活动，但是对于运维来说足够严重。为避免警告可能会被滥用，考虑这个条件：你希望别人看到警告后做什么？这个对他们来说有帮助吗？能否修复？能否提供数据以反馈给工程部门来改善系统。不要做警告不了任何人的警告日志</td>
+<td>使用了过期API、API使用不善、特殊参数（但不会引起错误）、从DB查找得到非预期的结果、其他非预期的运行时情景，但不是必须要警告</td>
+</tr>
+<tr>
+<td>ERROR</td>
+<td>系统级别的异常和错误情况——预期的或者非预期的。用户可以改正的业务逻辑错误不属于系统日志。理想情况下系统日志里的错误是应该能吸引运维、QA或工程师关注去改正的活动。系统的稳定状态永远不会产生错误</td>
+<td>系统异常</td>
+</tr>
+</tbody>
+</table>
+<h2 id="上下文丰富">上下文丰富</h2>
+<p>日志输出需要充足的上下文数据来让它有意义。简单的一个错误信息“NullPointer Exception”并没有告诉我们哪个对象是null。<br>
+日志输出应该保护充足的上下文信息来帮助人去理解日志输出时的状态。比如，一个错误信息可能包含方法执行时的参数。（注意不能包含个人敏感信息或者安全敏感的数据）<br>
+当你重新抛异常的时候，记得不要丢了原始的异常调用栈。</p>
+<h2 id="上下文识别">上下文识别</h2>
+<p>日志分析需要关联日志输出到上下文，这样能够帮助诊断和分析。例如大多数日志输出都会用时间戳去关联日志到时间上下文。另一方面，人们可能希望通过业务流程或用户获得甚至长期存在的用户会话来关联日志条目。<br>
+可以用做日志上下文识别的字段：</p>
+<ul>
+<li>时间戳</li>
+<li>日志级别</li>
+<li>日志类别（通常是类名）</li>
+<li>线程名字</li>
+<li>活动ID（如HTTP request、后台作业、异步任务、事件）</li>
+<li>用户ID</li>
+<li>用户session ID</li>
+<li>系统correlation ID</li>
+</ul>
+<p>大多数现代日志框架提供了嵌套诊断上下文（NDC）和映射诊断上下文（MDC）。<br>
+系统correlation ID是系统在一个活动开始的时候生成的唯一的识别符，并在系统中作为该活动的一部分进行的所有通信中一直带着它。</p>
+
+        </div>
+
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/classloader/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  Java ClassLoader和双亲委派模型
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/java-generic-type/">
+                <h3 class="post-title">
+                  Java泛型
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

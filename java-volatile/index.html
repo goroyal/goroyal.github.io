@@ -1,0 +1,464 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#volatile%E8%AF%AD%E4%B9%89">volatile语义</a></li>
+<li><a href="#volatile%E9%9D%9E%E5%8E%9F%E5%AD%90%E7%9A%84%E7%89%B9%E6%80%A7">volatile非原子的特性</a></li>
+<li><a href="#volatile%E8%83%BD%E4%BF%9D%E8%AF%81%E6%9C%89%E5%BA%8F%E6%80%A7">volatile能保证有序性</a></li>
+<li><a href="#volatile%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6">volatile的原理和实现机制</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Java volatile</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2020-08-02 / 11 min read
+        </div>
+        
+        <div class="post-content yue">
+          <h2 id="volatile语义">volatile语义</h2>
+<p>一旦一个共享变量（类的成员变量、类的静态成员变量）被volatile修饰之后，那么就具备了两层语义：</p>
+<ul>
+<li>保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。</li>
+<li>禁止进行指令重排序。</li>
+</ul>
+<p>看一段代码：</p>
+<pre><code class="language-java">public class VolatileExample extends Thread{
+    //设置类静态变量,各线程访问这同一共享变量
+    private  static boolean flag = false;
+    //无限循环,等待flag变为true时才跳出循环
+   public void run() {
+       while (!flag){
+       };
+       System.out.println(&quot;停止了&quot;);
+   }
+
+    public static void main(String[] args) throws Exception {
+        new VolatileExample().start();
+        //sleep的目的是等待线程启动完毕,也就是说进入run的无限循环体了
+        Thread.sleep(100);
+        flag = true;
+    }
+}
+</code></pre>
+<p>当把上面代码中变量flag改成下面这样：</p>
+<pre><code class="language-java">private  static valotile boolean flag = false;
+</code></pre>
+<p>在执行的话，你就会发现打印了“停止了”信息，因为用volatile修饰之后就变得不一样了：</p>
+<ul>
+<li>第一：使用volatile关键字会强制将修改的值立即写入主存；</li>
+<li>第二：使用volatile关键字的话，当线程main进行修改时，会导致线程那么线程VolatileExample的工作内存中缓存变量flag的缓存行无效（反映到硬件层的话，就是CPU的L1或者L2缓存中对应的缓存行无效）；</li>
+<li>第三：由于线程那么线程VolatileExample的工作内存中缓存变量flag的缓存行无效，所以线程那么线程VolatileExample再次读取变量flag的值时会去主存读取。</li>
+</ul>
+<p>那么在线程main修改flag值时（当然这里包括2个操作，修改线程main工作内存中的值，然后将修改后的值写入内存），会使得线程VolatileExample的工作内存中缓存变量flag的缓存行无效，然后线程读取时，发现自己的缓存行无效，它会等待缓存行对应的主存地址被更新之后，然后去对应的主存读取最新的值。</p>
+<p>那么线程VolatileExample读取到的就是最新的正确的值。<br>
+使用volatile关键字增加了实例变量在多个线程之间的可见性。但是volatile关键字最致命的缺点是不支持原子性。</p>
+<p>下面将关键字synchronized和volatile进行一下比较：</p>
+<ol>
+<li>关键字volatile是线程同步的轻量级实现，所以volatile性能肯定比synchronized要好，并且volatile只能修饰于变量，而synchronized可以修饰方法，以及代码块。随着JDK新版本的发布，synchronized关键字在执行效率上得到很大提升，在开发中使用synchronized关键字的比率还是比较大的。</li>
+<li>多线程访问volatile不会发生阻塞，而synchronized会出现阻塞。</li>
+<li>volatile能保证数据的可见性，但不能保证原子性；而synchronized可以保证原子性，也可以间接保证可见性，因为它将私有内存和公共内存中的数据做同步。</li>
+<li>再次重申一下，关键字volatile解决的是变量在多个线程之间的可见性；而synchronized关键字解决的是多个线程之间访问资源的同步性。</li>
+</ol>
+<h2 id="volatile非原子的特性">volatile非原子的特性</h2>
+<p>从上面知道volatile关键字保证了操作的可见性，但是volatile能保证对变量的操作是原子性吗？<br>
+下面看一个例子：</p>
+<pre><code class="language-Java">public class Test {
+    public volatile int inc = 0;
+     
+    public void increase() {
+        inc++;
+    }
+     
+    public static void main(String[] args) {
+        final Test test = new Test();
+        for(int i=0;i&lt;10;i++){
+            new Thread(){
+                public void run() {
+                    for(int j=0;j&lt;1000;j++)
+                        test.increase();
+                };
+            }.start();
+        }
+         
+         //保证前面的线程都执行完
+        while(Thread.activeCount()&gt;1)
+   			Thread.yield();
+        System.out.println(test.inc);
+    }
+}
+</code></pre>
+<p>也许有些朋友认为输出结果是10000。但是事实上运行它会发现每次运行结果都不一致，都是一个小于10000的数字。可能有人会有疑问，不对啊，上面是对变量inc进行自增操作，由于volatile保证了可见性，那么在每个线程中对inc自增完之后，在其他线程中都能看到修改后的值啊，所以有10个线程分别进行了1000次操作，那么最终inc的值应该是1000*10=10000。</p>
+<p>这里面就有一个误区了，volatile关键字能保证可见性没有错，但是上面的程序错在没能保证原子性。可见性只能保证每次读取的是最新的值，但是volatile没办法保证对变量的操作的原子性。</p>
+<p>在前面已经提到过，自增操作是不具备原子性的，它包括读取变量的原始值、进行加1操作、写入工作内存。那么就是说自增操作的三个子操作可能会分割开执行，就有可能导致下面这种情况出现：</p>
+<p>假如某个时刻变量inc的值为10，线程1对变量进行自增操作，线程1先读取了变量inc的原始值，然后线程1被阻塞了；</p>
+<p>然后线程2对变量进行自增操作，线程2也去读取变量inc的原始值，由于线程1只是对变量inc进行读取操作，而没有对变量进行修改操作，所以不会导致线程2的工作内存中缓存变量inc的缓存行无效，所以线程2会直接去主存读取inc的值，发现inc的值是10，然后进行加1操作，并把11写入工作内存，最后写入主存。</p>
+<p>然后线程1接着进行加1操作，由于已经读取了inc的值，注意此时在线程1的工作内存中inc的值仍然为10，所以线程1对inc进行加1操作后inc的值为11，然后将11写入工作内存，最后写入主存。</p>
+<p>那么两个线程分别进行了一次自增操作后，inc只增加了1。</p>
+<p>虽然happens-before规则中的volatile变量规则是保证一个变量在修改volatile变量时，会让缓存行无效吗，但是要注意，线程1对变量进行读取操作之后，被阻塞了的话，并没有对inc值进行修改。然后虽然volatile能保证线程2对变量inc的值读取是从内存中读取的，但是线程1没有进行修改，所以线程2根本就不会看到修改的值。</p>
+<p><strong>根源就在这里，自增操作不是原子性操作，而且volatile也无法保证对变量的任何操作都是原子性的。</strong></p>
+<p>把上面的代码改成以下任何一种都可以达到效果：<br>
+采用synchronized：</p>
+<pre><code class="language-java">public class Test {
+    public  int inc = 0;
+    
+    public synchronized void increase() {
+        inc++;
+    }
+    
+    public static void main(String[] args) {
+        final Test test = new Test();
+        for(int i=0;i&lt;10;i++){
+            new Thread(){
+                public void run() {
+                    for(int j=0;j&lt;1000;j++)
+                        test.increase();
+                };
+            }.start();
+        }
+        
+        while(Thread.activeCount()&gt;1)  //保证前面的线程都执行完
+            Thread.yield();
+        System.out.println(test.inc);
+    }
+}
+</code></pre>
+<p>采用Lock：</p>
+<pre><code class="language-java">public class Test {
+    public  int inc = 0;
+    Lock lock = new ReentrantLock();
+    
+    public  void increase() {
+        lock.lock();
+        try {
+            inc++;
+        } finally{
+            lock.unlock();
+        }
+    }
+    
+    public static void main(String[] args) {
+        final Test test = new Test();
+        for(int i=0;i&lt;10;i++){
+            new Thread(){
+                public void run() {
+                    for(int j=0;j&lt;1000;j++)
+                        test.increase();
+                };
+            }.start();
+        }
+        
+        while(Thread.activeCount()&gt;1)  //保证前面的线程都执行完
+            Thread.yield();
+        System.out.println(test.inc);
+    }
+}
+</code></pre>
+<p>采用AtomicInteger：</p>
+<pre><code class="language-Java">public class Test {
+    public  AtomicInteger inc = new AtomicInteger();
+     
+    public  void increase() {
+        inc.getAndIncrement();
+    }
+    
+    public static void main(String[] args) {
+        final Test test = new Test();
+        for(int i=0;i&lt;10;i++){
+            new Thread(){
+                public void run() {
+                    for(int j=0;j&lt;1000;j++)
+                        test.increase();
+                };
+            }.start();
+        }
+        
+        while(Thread.activeCount()&gt;1)  //保证前面的线程都执行完
+            Thread.yield();
+        System.out.println(test.inc);
+    }
+}
+</code></pre>
+<p>在java 1.5的java.util.concurrent.atomic包下提供了一些原子操作类，即对基本数据类型的 自增（加1操作），自减（减1操作）、以及加法操作（加一个数），减法操作（减一个数）进行了封装，保证这些操作是原子性操作。atomic是利用CAS来实现原子性操作的（Compare And Swap），CAS实际上是利用处理器提供的CMPXCHG指令实现的，而处理器执行CMPXCHG指令是一个原子性操作。</p>
+<h2 id="volatile能保证有序性">volatile能保证有序性</h2>
+<p>在前面提到volatile关键字能禁止指令重排序，所以volatile能在一定程度上保证有序性。</p>
+<p>volatile关键字禁止指令重排序有两层意思：<br>
+1）当程序执行到volatile变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行；</p>
+<p>2）在进行指令优化时，不能将在对volatile变量访问的语句放在其后面执行，也不能把volatile变量后面的语句放到其前面执行。<br>
+可能上面说的比较绕，举个简单的例子：</p>
+<pre><code class="language-Java">//x、y为非volatile变量
+//flag为volatile变量
+ 
+x = 2;        //语句1
+y = 0;        //语句2
+flag = true;  //语句3
+x = 4;         //语句4
+y = -1;       //语句5
+</code></pre>
+<p>由于flag变量为volatile变量，那么在进行指令重排序的过程的时候，不会将语句3放到语句1、语句2前面，也不会讲语句3放到语句4、语句5后面。但是要注意语句1和语句2的顺序、语句4和语句5的顺序是不作任何保证的。并且volatile关键字能保证，执行到语句3时，语句1和语句2必定是执行完毕了的，且语句1和语句2的执行结果对语句3、语句4、语句5是可见的。</p>
+<h2 id="volatile的原理和实现机制">volatile的原理和实现机制</h2>
+<p>前面讲述了源于volatile关键字的一些使用，下面我们来探讨一下volatile到底如何保证可见性和禁止指令重排序的。</p>
+<p>下面这段话摘自《深入理解Java虚拟机》：</p>
+<blockquote>
+<p>观察加入volatile关键字和没有加入volatile关键字时所生成的汇编代码发现，加入volatile关键字时，会多出一个lock前缀指令。<br>
+lock前缀指令实际上相当于一个内存屏障（也成内存栅栏），内存屏障会提供3个功能：</p>
+<ul>
+<li>它确保指令重排序时不会把其后面的指令排到内存屏障之前的位置，也不会把前面的指令排到内存屏障的后面；即在执行到内存屏障这句指令时，在它前面的操作已经全部完成；</li>
+<li>它会强制将对缓存的修改操作立即写入主存；</li>
+<li>如果是写操作，它会导致其他CPU中对应的缓存行无效。</li>
+</ul>
+</blockquote>
+<h2 id="总结">总结</h2>
+<p>synchronized关键字是防止多个线程同时执行一段代码，那么就会很影响程序执行效率，而volatile关键字在某些情况下性能要优于synchronized，但是要注意volatile关键字是无法替代synchronized关键字的，因为volatile关键字无法保证操作的原子性。通常来说，使用volatile必须具备以下2个条件：</p>
+<ul>
+<li>对变量的写操作不依赖于当前值</li>
+<li>该变量没有包含在具有其他变量的不变式中</li>
+</ul>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/Ke7gk0EO5/">
+            <span class="flex-auto">Java</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/java-memory-model/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  Java内存模型
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/java-thread-feature/">
+                <h3 class="post-title">
+                  Java 线程中的3个特性
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

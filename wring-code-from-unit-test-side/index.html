@@ -1,0 +1,295 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%8F%90%E9%AB%98%E8%A6%86%E7%9B%96%E7%8E%87">1. 为什么要提高覆盖率？</a></li>
+<li><a href="#2-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E4%B8%BA%E4%BD%95%E9%9A%BE%E5%86%99">2. 单元测试为何难写？</a></li>
+<li><a href="#3-%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95">3. 如何写好单元测试</a></li>
+<li><a href="#4-%E7%BB%93%E8%AF%AD">4. 结语</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">以单元测试的角度聊聊写代码</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2019-05-24 / 8 min read
+        </div>
+        
+        <div class="post-content yue">
+          <p>单元测试，也就是对代码较细粒度单元的测试，一般就是测某个方法或函数。说到单元测试，基本上每个开发者都不陌生，时不时会听到“测试覆盖率太低了！”，然后“We need to increase our code coverage!”。经常出bug？好好准备测试吧。</p>
+<!-- more -->
+<h2 id="1-为什么要提高覆盖率">1. 为什么要提高覆盖率？</h2>
+<p>覆盖率为什么这么重要？我们每次修改代码之后都不希望把原有可用的功能搞出问题，如果没有足够的测试覆盖，开发者就没有足够的信心去交付新代码。测试覆盖率高的话，就可以用机器自动去跑高效率地去验证，在覆盖不到的地方需要人工去验证。所以当覆盖率很低的时候，人工需要一遍又一遍的去验证已有的功能，还要去验证新加的功能是否符合预期，这个真的会崩溃。开发者自己去做的话，八成会偷懒抑或是觉得自己改的范围影响不到那么多测得乐观。如果让测试工程师去做，那么需要领导们考虑开发跟测试的比例了。</p>
+<p>测试覆盖率不完全是看单元测试，还包括更高层次的集成测试、系统测试。当然了，如果单元测试没写多少，指望粒度更粗层次更高的其他测试，你会非常痛苦的。单元测试的2个优势：跑得快、容易定位问题。</p>
+<p>上面说了这么多，就是在强调单元测试覆盖率一定要尽可能高，每个单元测试职责一定要尽可能单一简单。单元测试覆盖无非就是代码行覆盖、分支覆盖，单元测试职责单一简单是说单元测试不要试图测某个方法的所有可能性，多写几个，这样出了问题能根据测试名字迅速找到为什么什么用例失败了以及被测方法的哪行可能有问题。</p>
+<h2 id="2-单元测试为何难写">2. 单元测试为何难写？</h2>
+<p>你可能听说过“测试驱动开发”，就是先写测试、后写代码，这个要求在写代码之前先好好分析需求、细化用例，把各个用例的测试写出来，每次改动代码都要求让尽可能多的测试结果为绿（成功），直到最后所有测试都绿了，那么代码的功能上也基本没问题了。这个可以了解下，有兴趣多看看这方面拓展一下。<br>
+<img src="https://goroyal.github.io/post-images/1560780095750.png" alt="" loading="lazy"></p>
+<p>为什么单元测试覆盖率往往上不去？因为有时候真的不好写。什么样的代码不好写单元测试：</p>
+<ol>
+<li>被测方法传入了比较复杂的类的对象参数（不是依赖接口），当我要测这个方法，我就要去new依赖的那个对象，但是那个对象又依赖其他的，我又要接着new……，可能这个方法还没开始测，光创建它依赖的东西就写了一大堆测试代码。</li>
+<li>被测方法传入了某个对象作为参数，调用的复杂方法（不是依赖接口），这个方法有多复杂？可能它也跟上面一样也要new很多个对象才能跑起来，或者它调用了外部服务（网络、数据库等等）。简直没法测。</li>
+<li>被测方法自己内部创建了一些复杂对象、或者这个方法所属对象的实例创建了一些复杂对象，往往可能是外部有依赖的，比如对文件系统、数据库、网络等有调用。</li>
+<li>被测方法自己内部引用了static变量。</li>
+<li>被测方法自己内部引用了单例对象。</li>
+<li>被测方法调用了复杂的static方法，无法mock、无法用桩。</li>
+<li>被测方法是一个static方法，它可能依赖一个或多个static变量，这个变量还会被其他static方法修改，很难保证当前测试的独立性，包括它本身作为生产代码都是有坑的。</li>
+<li>被测方法传入了对象参数，考虑用桩了，但是发现那个类或者方法是final的，无法继承重写（如果是C#语言，sealed类无法被继承，无override关键字的方法不能被重写）。</li>
+<li>被测方法本身太长了，很难面面俱到，或者是单元测试出了错之后不好定位是哪行代码引起的问题</li>
+</ol>
+<h2 id="3-如何写好单元测试">3. 如何写好单元测试</h2>
+<p><strong>单元测试应该聚焦于被测方法本身的行为</strong>，而不是被测方法所依赖的其他对象的行为。外部环境有依赖的代码应该尽可能少，并且尽量去调用接口，而不是具体的类。我们经常会听到“面向接口编程”，这个用了之后，写单元测试真的是非常爽。单元测试里面会用mock库或者自己去创建简单的类去模拟某个方法的行为，接口约定根据输入会产生什么样的输出，对于调用接口的方法而言不必去关心具体的实现是什么。Java里有著名的Mockito，C#里有Moq，用起来如行云流水一般。</p>
+<p><strong>方法或者类构造器里面自己创建的对象不能太复杂</strong>，复杂了你就没法测了。可以考虑调用该对象的接口，将它作为输入参数，那么就可以用上面说的方式去测了。</p>
+<p>个人理解，<strong>static方法要尽可能做到纯函数化</strong>，也就是说一样的输入参数，随便什么情况下调用都应该给一样的输出。这其实就要求static这样的静态方法不要依赖不可控的static变量。如果做不到，尽量缩小它的使用范围吧……普通的实例方法调用static方法尽可能只调用简单的，没事别调用public的static变量，调用不受控制的static变量简直是给自己找麻烦，不可测是一方面，运行时被别的代码改掉的话就是灾难了。</p>
+<p><strong>当被测方法太长的时候，实际上就意味着方法要拆了</strong>，便于理解和维护。可以正常的拆，比如新建方法、新建类，也可以花哨地拆。有些人写了一堆if、else语句，如果是创建对象相关的，是否可以考虑工厂模式了？如果if、else里面是比较长的逻辑，可以考虑用策略模式。而如果是普通的前后累积的代码很长，要不试试责任链模式？当拆完之后，原本的非常长的不好测的方法变成若干个易测的小方法。覆盖率自然就上去了。</p>
+<h2 id="4-结语">4. 结语</h2>
+<p>当每层代码都经过单元测试确保自己这层没问题之后，整个逻辑的链条其实问题不大了。覆盖率不是简简单单为了覆盖而覆盖，单元测试都要有断言，就是如果跟测试目的产生不一致的结果这个测试必须显示失败，否则光数据好看是没用的。<strong>单元测试也不可能做到100%覆盖，但是可以尽可能做得高</strong>，覆盖不到的地方再通过集成测试或者系统层面的测试去做。至于做不到100%覆盖的原因，比如代码里有对外部依赖的地方，再怎么抽离，总有地方需要去初始化。那么对于这个情况，尽可能把这个对外依赖范围缩小，其他地方用的时候传递接口。</p>
+<p>关于面向接口编程和减少耦合，还可以了解下依赖注入，能帮助解耦调用模块和具体实现类模块。</p>
+<p>为了代码可扩展性高、良好设计、易测试，可能会出现一个复杂业务逻辑的代码一层套一层的情况，一个逻辑看完可能经历了若干个类，这也是人们常常吐槽的Java这种语言的一个“啰嗦”之处。这个我也没有什么更好的想法，如果你有，可以分享一下。</p>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/en071zNCj/">
+            <span class="flex-auto">Programming</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/Try with closable resources/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  Try with closable resources
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/http-response-code/">
+                <h3 class="post-title">
+                  HTTP 响应状态码
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

@@ -1,0 +1,401 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Inverted Index</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2020-08-03 / 3 min read
+        </div>
+        
+        <div class="post-content yue">
+          <p>Inverted Index, 也就是反向索引（倒排索引）。反向索引结构是典型的搜索引擎算法重要的部分。</p>
+<p>常规的索引是文档到关键词的映射，但是这样的话检索关键词会比较慢，需要遍历一个又一个的文档。反向索引是从关键词到文档，这样可以根据关键词找到它在哪个文档里出现。</p>
+<p>一个未经处理的数据库中，一般是以文档ID作为索引，以文档内容作为记录。而Inverted index 指的是将单词或记录作为索引，将文档ID作为记录，这样便可以方便地通过单词或记录查找到其所在的文档吗。</p>
+<p>以英文为例，下面是要被索引的文本：</p>
+<pre><code>T0 = &quot;it is what it is&quot;
+T1 = &quot;what is it&quot;
+T2 = &quot;it is a banana&quot;
+</code></pre>
+<p>可以得到下列的反向文件索引：</p>
+<pre><code>&quot;a&quot;: {2}
+&quot;banana&quot;: {2}
+&quot;it&quot;: {0, 1, 2}
+&quot;is&quot;: {0, 1, 2}
+&quot;what&quot;: {0, 1}
+</code></pre>
+<p>还可以在反向索引里面加上单词出现的位置，比如<code>&quot;banana&quot;: {(2, 3)}</code>表示banana出现在第三个文本的第四个位置。</p>
+<p>反向索引在ElasticSearch里面也被使用到（Lucene)。假设有2个文档，文档的<code>content</code>域包含下列内容：</p>
+<ol>
+<li>The quick brown fox jumped over the lazy dog</li>
+<li>Quick brown foxes leap over lazy dogs in summer</li>
+</ol>
+<p>为了创建反向索引，首先将每个文档的<code>content</code>拆分成词（称为<code>词条</code>或<code>token</code>），创建一个包含所有不重复词条的排序列表，然后列出每个词条出现在哪个文档。如下所示：</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Doc_1</th>
+<th>Doc_2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quick</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>The</td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>brown</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>dog</td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>dogs</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>fox</td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>foxes</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>in</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>jumped</td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>lazy</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>leap</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>over</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>quick</td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td>summer</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>the</td>
+<td>X</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>如果我们想搜索<code>quick brown</code>，我们只需要查找包含每个词条的文档：</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Doc_1</th>
+<th>Doc_2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>brown</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>quick</td>
+<td>X</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>2</strong></td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<p>两个文档都匹配，但是第一个文档比第二个匹配度更高。当然了，上面的反向索引存在点问题，比如<code>Quick</code>和<code>quick</code>，<code>dogs</code>和<code>dog</code>，可以作为相同词根进行索引，但还是不够的，需要进一步<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/analysis-intro.html">分析</a>。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://zh.wikipedia.org/zh-hans/%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95">维基百科</a><br>
+<a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/inverted-index.html">ElasticSearch文档</a></p>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/dOIw4zPHC/">
+            <span class="flex-auto">Data Structure</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/msbuild-learn/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  MSBuild学习
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/jvm-lei-jia-zai-ji-zhi/">
+                <h3 class="post-title">
+                  JVM类加载机制
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

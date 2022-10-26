@@ -1,0 +1,404 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E6%A6%82%E5%BF%B5">概念</a></li>
+<li><a href="#%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3">定义注解</a></li>
+<li><a href="#%E4%B8%89%E7%A7%8D%E6%A0%87%E5%87%86%E6%B3%A8%E8%A7%A3">三种标准注解</a>
+<ul>
+<li><a href="#override">@Override</a></li>
+<li><a href="#deprecated">@Deprecated</a></li>
+<li><a href="#suppresswarnings">@SuppressWarnings</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9B%9B%E7%A7%8D%E5%85%83%E6%B3%A8%E8%A7%A3">四种元注解</a>
+<ul>
+<li><a href="#target">@Target</a></li>
+<li><a href="#retention">@Retention</a></li>
+<li><a href="#documented">@Documented</a></li>
+<li><a href="#inherited">@Inherited</a></li>
+</ul>
+</li>
+<li><a href="#%E9%80%9A%E8%BF%87%E5%8F%8D%E5%B0%84%E5%8A%A0%E8%BD%BD%E6%B3%A8%E8%A7%A3">通过反射加载注解</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Java中的注解</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2019-02-06 / 7 min read
+        </div>
+        
+        <div class="post-content yue">
+          <h2 id="概念">概念</h2>
+<p>注解，也就是Annotation，是Java 5 开始引入的特征，它提供了一种安全的类似注释的机制，用来将任何的信息或元数据与程序元素（类、方法、属性等）进行关联。<br>
+Annotation通过Java反射机制来访问注解信息，相关类根据这些信息决定对这些程序元素采用什么行为。Java语言解释器在工作时会忽略这些注解，因此注解在JVM中是“不起作用”的，只能通过配套工具对这些注解类型的信息进行访问和处理。<br>
+在软件框架或者工具中常常用到注解，比如Struts，JUnit，TestNG，Spring等。</p>
+<!-- more -->
+<h2 id="定义注解">定义注解</h2>
+<p>注解使用关键字<code>@interface</code>定义，而不是<code>interface</code>。所有注解都是继承的<code>java.lang.annotation.Annotation</code>接口，但是如果直接创建一个interface继承<code>java.lang.annotation.Annotation</code>接口并不是定义一个注解类型。<br>
+创建的注解类型中可以定义常量、静态成员，也可以定义方法。但是这些方法的声明里必须是无参数、无抛出异常的。方法的返回值必须为primitive类型（包括<code>String</code>类型）、<code>Class</code>类型、枚举类型、注解类型中的一个或者以上之一组成的一维数组。方法的后面可以用default和一个值来表示这个方法的默认返回值，注意，默认值不能设为null。只有返回值是<code>Class</code>的方法可以在注解类型中使用泛型，因为该方法能够将各种类型通过类转换变成<code>Class</code>。<br>
+举一个定义注解的例子：</p>
+<pre><code class="language-java">public @interface Property{
+    boolean nullable default false;
+    String value default &quot;&quot;;
+}
+
+public class User{
+    @Property(value = &quot;林雷&quot;)
+    private String userName;
+}
+</code></pre>
+<p>如以上先定义了一个注解类型<code>@Property</code>，然后定义一个Bean，也就是User类，其中有个userName的属性，对其用<code>@Property</code>注解进行了标记，那么也就是说userName被标记为值为“林雷”，而且它是不可空的，<code>@Property</code>后面括号里用等号连接的是个赋值操作，等号左边的内容实际上就是注解中定义的方法，等号右边的内容就是让注解中对应的方法返回一个什么样的值，如果不定义的话就采用注解里设的默认值。可以定义多个，以逗号隔开。</p>
+<h2 id="三种标准注解">三种标准注解</h2>
+<p>从Java 5开始就已经自带了三种标准注解，如下：</p>
+<h3 id="override">@Override</h3>
+<pre><code class="language-java">@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.SOURCE)
+public @interface Override {
+}
+</code></pre>
+<p><code>@Override</code>是一种标记型注解。表示当前的方法定义覆盖了父类中的方法，起到断言作用，方法签名必须相同（即方法名、参数类型、参数顺序、参数个数都一样），否则无法通过编译。这个注解常用作试图覆盖父类方法而又写错了方法名时的一个保障性校验。</p>
+<h3 id="deprecated">@Deprecated</h3>
+<pre><code class="language-java">@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value={CONSTRUCTOR, FIELD, LOCAL_VARIABLE, METHOD, PACKAGE, PARAMETER, TYPE})
+public @interface Deprecated {
+}
+</code></pre>
+<p><code>@Deprecated</code>是一种标记型注解。对不应该再使用的程序元素添加该注解，当调用被注解的方法时，在编译器会显示提示信息不鼓励使用被这个注解了的程序元素。<br>
+注意，该注解与JavaDoc注释中的<code>@deprecated</code>标记是有区别的：前者是用于Java编译器识别的，而后者是在生成文档时被JavaDoc识别。</p>
+<h3 id="suppresswarnings">@SuppressWarnings</h3>
+<pre><code class="language-java">@Target({TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE})
+@Retention(RetentionPolicy.SOURCE)
+public @interface SuppressWarnings {
+    String[] value();
+}
+</code></pre>
+<p>此注解能告诉Java编译器关闭对类、方法及成员变量的警告。有时编译时会提出一些警告，对于这些警告有的隐藏着Bug，有的是无法避免的，对于某些不想看到的警告信息，可以通过这个注解来屏蔽。<code>@SuppressWarning</code>不是一个marker annotation。它有一个类型为<code>String[]</code>的成员，这个成员的值为被禁止的警告名。对于javac编译器来讲，被-Xlint选项有效的警告名也同样对<code>@SuppressWarings</code>有效，同时编译器忽略掉无法识别的警告名。</p>
+<h2 id="四种元注解">四种元注解</h2>
+<h3 id="target">@Target</h3>
+<p>表示注解可以用在什么地方，它的值是ElementType枚举中的枚举类型：<br>
+CONSTRUCTOR 构造器声明；<br>
+FIELD 域声明；<br>
+METHOD 方法声明；<br>
+TYPE 类、接口或enum声明；<br>
+PARAMETER 参数声明；<br>
+LOCAL_VARIABLE 局部变量声明；<br>
+ANNOTATION_TYPE 注释类型声明<br>
+PACKAGE 包声明</p>
+<h3 id="retention">@Retention</h3>
+<p>表示需要在什么级别保存该注解信息。设值时需要提供java.lang.annotation.RetentionPolicy中的枚举类型。</p>
+<pre><code class="language-java">public enum RetentionPolicy{
+    SOURCE, //编译程序处理完Annotation信息后就完成任务
+    CLASS, //编译程序将Annotation储存于class中，但会被虚拟机丢弃，@Retention默认是Class级别
+    RUNTIME //编译程序将Annotation储存于class中，虚拟机在运行期也保留注解，可以通过反射机制读取注解信息
+}
+</code></pre>
+<h3 id="documented">@Documented</h3>
+<p>将此注解包含到Javadoc中。</p>
+<h3 id="inherited">@Inherited</h3>
+<p>允许子类继承父类的注解。</p>
+<hr>
+<p>在自定义注解的时候可以综合使用这四个元注解定义自己定义的注解的作用范围等信息。</p>
+<h2 id="通过反射加载注解">通过反射加载注解</h2>
+<p>还用之前举的例子，下面简单写个通过反射获得注解信息的例子。<br>
+先定义注解：</p>
+<pre><code class="language-java">import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Property {
+    boolean nullable() default false;
+
+    String value() default &quot;&quot;;
+}
+</code></pre>
+<p>定义POJO Bean：</p>
+<pre><code class="language-java">public class User {
+
+    @Property(value = &quot;李雷&quot;)
+    private String username;
+
+    @Property(nullable = true, value = &quot;test@a.com&quot;)
+    private String email;
+}
+</code></pre>
+<p>接下来就是获取这个注解了：</p>
+<pre><code class="language-java">import java.lang.reflect.Field;
+
+public class AnnotationTest {
+    public static void main(String[] args){
+        //获取User类的Class实例
+        Class&lt;?&gt; clazz = User.class;
+        //获取这个类的所有属性
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields){
+            //判断这个属性中是否有Property注解
+            if (field.isAnnotationPresent(Property.class)){
+                Property property = field.getAnnotation(Property.class);
+                System.out.println(field.getName()+&quot;: &quot;+property.nullable()+&quot; &quot;+property.value());
+            }
+        }
+    }
+}
+</code></pre>
+<p>运行之后结果为：</p>
+<pre><code>username: false 李雷
+email: true test@a.com
+</code></pre>
+<p>从上面的结果也可以看到，即使类中的属性定义为private类型，也可以通过注解对其进行标记赋值，这个方法在Spring等框架中常常使用。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="http://computerdragon.blog.51cto.com/6235984/1210969">Java注解annotation用法和自定义注解处理器</a></li>
+<li><a href="http://www.cnblogs.com/mandroid/archive/2011/07/18/2109829.html">Java基础之理解Annotation</a></li>
+<li><a href="http://www.itzhai.com/java-based-notebook-annotation-annotation-introduction-and-use-custom-annotations.html">Java基础笔记 - Annotation注解的介绍和使用 自定义注解</a></li>
+</ul>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/Ke7gk0EO5/">
+            <span class="flex-auto">Java</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/http-response-code/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  HTTP 响应状态码
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/exit-command-in-linux/">
+                <h3 class="post-title">
+                  Linux 中的 exit 命令
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

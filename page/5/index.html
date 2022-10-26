@@ -1,0 +1,409 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            千里之行，始于足下。<br/>
+持续探索中……
+          </p>
+          <div class="animated fadeInLeft social-container hidden lg:block" style="animation-delay: 0.6s">
+            
+              
+                <a href="https://github.com/goroyal" target="_blank" class="mr-4 text-xl text-gray-400 font-light hover:text-gray-900">
+                  <i class="ri-github-line"></i>
+                </a>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4">
+        <h2 class="latest-article text-lg text-gray-700 mb-8">
+          <i class="ri-article-line"></i>
+          最新文章
+        </h2>
+        
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${0 * 0.2}s` }">
+    
+    <div class="content">
+      <a href="https://goroyal.github.io/java-map/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">【数据结构】Java里的各种Map</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        <p><code>Map</code>就如它字面意思，是一个从键（key）到值（value）的映射。我们在Map里面存储键值对，根据键得到值，因此键是不能重复的（如果插入一个有重复键的记录，则会覆盖原有的值），但是值可以重复。</p>
+<p>Java里面基于对Map的不同访问需求创建了它的不同实现类：</p>
+<ul>
+<li>对键的顺序没有要求</li>
+<li>取出键的顺序按照插入记录时的顺序</li>
+<li>取出键的顺序按照键的升序排序</li>
+</ul>
+
+      </div>
+      <div class="text-gray-400 text-sm font-light">2020-07-10 / 4 min read</div>
+    </div>
+  </section>
+
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${1 * 0.2}s` }">
+    
+    <div class="content">
+      <a href="https://goroyal.github.io/js-object/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">JavaScript里的对象</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        <p>JavaScript简单数据结构包括数字、字符串、布尔值、null值、undefined值，其他都是对象。<br>
+对象时属性的容器，其中每个属性都是名字和值。<br>
+JavaScript里面的对象时无类型的，对新属性的名字和值没有限制，适合用于聚集和管理数据，对象里也可以包含其他对象。</p>
+
+      </div>
+      <div class="text-gray-400 text-sm font-light">2020-07-10 / 3 min read</div>
+    </div>
+  </section>
+
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${2 * 0.2}s` }">
+    
+    <div class="content">
+      <a href="https://goroyal.github.io/mysql-storage-engine/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">MySQL不同的存储引擎</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        <p>MySQL由以下几部分组成：</p>
+<ul>
+<li>连接池组件</li>
+<li>管理服务和工具组件</li>
+<li>SQL接口组件</li>
+<li>查询分析器组件</li>
+<li>优化器组件</li>
+<li>缓冲（Cache）组件</li>
+<li>插件式存储引擎</li>
+<li>物理文件</li>
+</ul>
+<p>MySQL区别于其他数据库的最重要的特点就是其插件式的表存储引擎。MySQL插件式的存储引擎架构提供了一系列标准的管理和服务支持，这些标准与存储引擎本身无关，可能是每个数据库系统本身都必需的，如SQL分析器和优化器等，而存储引擎是底层物理结构的实现，每个存储引擎开发者都可以按照自己的意愿来进行开发。</p>
+<p><strong>注意：存储引擎是基于表的，而不是数据库。</strong></p>
+
+      </div>
+      <div class="text-gray-400 text-sm font-light">2020-07-10 / 14 min read</div>
+    </div>
+  </section>
+
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${3 * 0.2}s` }">
+    
+    <div class="content">
+      <a href="https://goroyal.github.io/array-and-linkedlist/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">【数据结构】数组和链表</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        <p>在计算机程序里，数据存储的方式无外乎两种：顺序存储和链式存储。顺序存储的结构可以称为顺序表，也可以用数组描述，链式存储的结构可以称为链表。<br>
+我们每一个学过数据结构的都知道，它们两者各自有一些鲜明的特性，比如：</p>
+<ul>
+<li>我们可以通过数组下标去访问数组里的元素，查询、更新的效率高，时间复杂度是O(1)，但是在中间某个位置插入或删除一个元素就要挪动后面所有的元素，时间复杂度是O(n)。</li>
+<li>链表里元素之间存在指针指向关联的另一个元素，我们只能通过指针挨个去遍历访问链表里的元素，查询、更新的效率低，时间复杂度是O(n)，在中间某个位置插入或删除一个元素比较方便，只需要修改相邻指针的引用就可以了，时间复杂度是O(1)。</li>
+</ul>
+
+      </div>
+      <div class="text-gray-400 text-sm font-light">2020-07-10 / 4 min read</div>
+    </div>
+  </section>
+
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${4 * 0.2}s` }">
+    
+    <div class="content">
+      <a href="https://goroyal.github.io/linux-redirect-dev-null/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">Linux 中的 2&gt; /dev/null</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        <p>本文亦发布于<a href="https://thinkbucket.cn/blog/2020/05/21/linux-redirect-dev-null">ThinkBucket</a>。<br>
+在 Linux 的 shell 命令或者脚本中，我们经常看到这样的命令：</p>
+<pre><code class="language-shell">2&gt; /dev/null
+</code></pre>
+<p>这是何意？</p>
+
+      </div>
+      <div class="text-gray-400 text-sm font-light">2020-05-21 / 5 min read</div>
+    </div>
+  </section>
+
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${5 * 0.2}s` }">
+    
+    <div class="content">
+      <a href="https://goroyal.github.io/oop-and-pure-function/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">面向对象编程与纯函数</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        <p>在面向对象编程里面，我们常常对现实世界建模抽象成一个个类，然后创建它们的对象，通过对象的方法行为去描述逻辑。</p>
+<p>纯函数是一种特殊的函数，给它相同的输入永远会得到相同的输出，而且没有任何可观察的副作用。</p>
+
+      </div>
+      <div class="text-gray-400 text-sm font-light">2019-06-27 / 1 min read</div>
+    </div>
+  </section>
+
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${6 * 0.2}s` }">
+    
+    <div class="content">
+      <a href="https://goroyal.github.io/manage-multiple-java-versions/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">在Shell里管理多个Java版本</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        <p>自从Oracle宣布Java开始收费之后，越来越多的人会考虑从[Open JDK][1]下载安装Java环境。可能自己机器上也会同时并存好几个Java版本，本文以macOS为例介绍一下如何从Open JDK安装并进行管理多版本。</p>
+
+      </div>
+      <div class="text-gray-400 text-sm font-light">2019-06-27 / 3 min read</div>
+    </div>
+  </section>
+
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${7 * 0.2}s` }">
+    
+    <div class="content">
+      <a href="https://goroyal.github.io/Try with closable resources/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">Try with closable resources</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        
+      </div>
+      <div class="text-gray-400 text-sm font-light">2019-06-17 / 1 min read</div>
+    </div>
+  </section>
+
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${8 * 0.2}s` }">
+    
+    <div class="content">
+      <a href="https://goroyal.github.io/wring-code-from-unit-test-side/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">以单元测试的角度聊聊写代码</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        <p>单元测试，也就是对代码较细粒度单元的测试，一般就是测某个方法或函数。说到单元测试，基本上每个开发者都不陌生，时不时会听到“测试覆盖率太低了！”，然后“We need to increase our code coverage!”。经常出bug？好好准备测试吧。</p>
+
+      </div>
+      <div class="text-gray-400 text-sm font-light">2019-05-24 / 8 min read</div>
+    </div>
+  </section>
+
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${9 * 0.2}s` }">
+    
+    <div class="content">
+      <a href="https://goroyal.github.io/http-response-code/">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">HTTP 响应状态码</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
+        <p>目前HTTP在Web开发中被广泛使用，REST (Representational State Transfer) 很多人应该或多或少都知道些。当然了，比较熟悉的可能主要是GET、POST方法。这篇文章不是介绍REST的定义和如何创建符合REST风格的API，而是讲讲在Web开发中通用的不同HTTP响应状态码的含义。在普通网站开发、分布式集群开发、团队协作方面，如果采用了HTTP作为组件之间交互的协议，遵守通用的响应状态码是很有必要的（一是有充分的信息量、二是避免歧义）。</p>
+<p>HTTP响应状态共有5大类，分别是数字1、2、3、4、5开头。</p>
+
+      </div>
+      <div class="text-gray-400 text-sm font-light">2019-04-06 / 6 min read</div>
+    </div>
+  </section>
+
+        <div class="read-more">
+          
+            <a href="https://goroyal.github.io/page/6/" class="animated fadeIn font-extrabold text-gray-700 hover:text-gray-900 more-btn">
+              阅读更多
+              <i class="ri-arrow-right-line"></i>
+            </a>
+          
+        </div>
+        <div class="index-page">
+          <div class="pagination-container animated fadeIn">
+  
+    <a href="https://goroyal.github.io/page/4/" class="page-btn"><i class="ri-arrow-left-line"></i> 上一页</a>
+  
+  
+    <a href="https://goroyal.github.io/page/6/" class="page-btn">下一页 <i class="ri-arrow-right-line"></i></a>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

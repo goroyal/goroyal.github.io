@@ -1,0 +1,487 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%A0%86%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F%E8%AE%BE%E7%BD%AE">堆内存大小设置</a></li>
+<li><a href="#%E5%9B%9E%E6%94%B6%E5%99%A8%E9%80%89%E6%8B%A9">回收器选择</a>
+<ul>
+<li><a href="#%E5%90%9E%E5%90%90%E9%87%8F%E4%BC%98%E5%85%88%E7%9A%84%E5%B9%B6%E8%A1%8C%E6%94%B6%E9%9B%86%E5%99%A8">吞吐量优先的并行收集器</a></li>
+<li><a href="#%E5%93%8D%E5%BA%94%E6%97%B6%E9%97%B4%E4%BC%98%E5%85%88%E7%9A%84%E5%B9%B6%E5%8F%91%E6%94%B6%E9%9B%86%E5%99%A8">响应时间优先的并发收集器</a></li>
+</ul>
+</li>
+<li><a href="#%E8%BE%85%E5%8A%A9%E4%BF%A1%E6%81%AF">辅助信息</a>
+<ul>
+<li><a href="#-xxprintgc"><code>-XX:+PrintGC</code></a></li>
+<li><a href="#-xxprintgcdetails"><code>-XX:+PrintGCDetails</code></a></li>
+<li><a href="#-xxprintgctimestamps"><code>-XX:+PrintGCTimeStamps</code></a></li>
+<li><a href="#-xxprintgcapplicationconcurrenttime"><code>-XX:+PrintGCApplicationConcurrentTime</code></a></li>
+<li><a href="#-xxprintgcapplicationstoppedtime"><code>-XX:+PrintGCApplicationStoppedTime</code></a></li>
+<li><a href="#-xxprintheapatgc"><code>-XX:PrintHeapAtGC</code></a></li>
+<li><a href="#-xloggcfilename">-Xloggc:filename</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B8%B8%E8%A7%81%E9%85%8D%E7%BD%AE%E6%B1%87%E6%80%BB">常见配置汇总</a>
+<ul>
+<li><a href="#%E5%A0%86%E8%AE%BE%E7%BD%AE">堆设置</a>
+<ul>
+<li><a href="#%E4%BC%98%E5%85%88%E7%BA%A7">优先级</a></li>
+</ul>
+</li>
+<li><a href="#%E6%94%B6%E9%9B%86%E5%99%A8%E8%AE%BE%E7%BD%AE">收集器设置</a>
+<ul>
+<li><a href="#%E5%B9%B6%E8%A1%8C%E6%94%B6%E9%9B%86%E5%99%A8%E8%AE%BE%E7%BD%AE">并行收集器设置</a></li>
+<li><a href="#%E5%B9%B6%E5%8F%91%E6%94%B6%E9%9B%86%E5%99%A8%E8%AE%BE%E7%BD%AE">并发收集器设置</a></li>
+<li><a href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF">垃圾回收统计信息</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E8%B0%83%E4%BC%98%E6%80%BB%E7%BB%93">调优总结</a>
+<ul>
+<li><a href="#%E5%B9%B4%E8%BD%BB%E4%BB%A3%E5%A4%A7%E5%B0%8F%E9%80%89%E6%8B%A9">年轻代大小选择</a></li>
+<li><a href="#%E5%B9%B4%E8%80%81%E4%BB%A3%E5%A4%A7%E5%B0%8F%E9%80%89%E6%8B%A9">年老代大小选择</a></li>
+<li><a href="#%E8%BE%83%E5%B0%8F%E5%A0%86%E5%BC%95%E8%B5%B7%E7%9A%84%E7%A2%8E%E7%89%87%E9%97%AE%E9%A2%98">较小堆引起的碎片问题</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">JVM调优之参数配置</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2020-08-21 / 13 min read
+        </div>
+        
+        <div class="post-content yue">
+          <h2 id="堆内存大小设置">堆内存大小设置</h2>
+<p>JVM的堆内存大小有三方面限制：</p>
+<ul>
+<li>相关操作系统的数据模型（32位还是64位）限制</li>
+<li>系统的可用虚拟内存限制</li>
+<li>系统的可用物理内存限制</li>
+</ul>
+<p>32位系统下，一般限制在1.5G~2G，64位操作系统对内存无限制。</p>
+<p>JVM的堆内存分为2块：</p>
+<ul>
+<li>Meta space：从Java 8开始，Java淘汰了原来的持久代（Permanent Generation），代之以元空间Meta space。主要存放的是Java类定义信息和常量。</li>
+<li>Heap = 分为年轻代和年老代。年轻代又常分为2个Survivor区和1个Eden区。年轻代和年老代的划分对垃圾收集影响比较大。</li>
+</ul>
+<p>大部分对象在Eden区中生成。当Eden区满时，还存活的对象将被复制到Survivor区（两个中的一个），当一个Survivor区满时，此区的存活对象将被复制到另外一个Survivor区，当另一个Survivor区也满了的时候，从前一个Survivor区复制过来的并且此时还存活的对象，将可能被复制到年老代。</p>
+<p>2个Survivor区是对称的，没有先后关系，所以同一个Survivor区中可能同时存在从Eden区复制过来对象，和从另一个Survivor区复制过来的对象；而复制到年老区的只有从另一个Survivor区过来的对象。因为需要交换的原因，Survivor区至少有一个是空的。特殊的情况下，根据程序需要，Survivor区是可以配置为多个的（多于2个），这样可以增加对象在年轻代中的存在时间，减少被放到年老代的可能。</p>
+<p>针对年轻代的垃圾回收即Young GC。在年轻代中经历了若干次（可配置）垃圾回收后仍然存活的对象，就会被复制到年老代中。因此，可以认为年老代中存放的都是一些生命周期较长的对象。针对年老代的垃圾回收即Full GC。</p>
+<p>JVM的一个典型设置：</p>
+<pre><code class="language-shell">java -Xmx3550m -Xms3550m -Xmn2g -Xss128k
+</code></pre>
+<ul>
+<li><code>-Xmx3550m</code>：设置JVM最大可用内存为3550M。</li>
+<li><code>-Xms3550m</code>：设置JVM初始内存为3550m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。</li>
+<li><code>-Xmn2g</code>：设置年轻代大小为2G。整个JVM内存大小=年轻代大小 + 年老代大小 + 元空间大小。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，<strong>Oracle官方推荐配置为整个堆的3/8</strong>。</li>
+<li><code>-Xss128k</code>：设置每个线程的堆栈大小。Java 5以后每个线程堆栈大小为1M，以前每个线程堆栈大小为256K。更具应用的线程所需内存大小进行调整。在相同物理内存下，减小这个值能生成更多的线程。但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在3000~5000左右。</li>
+</ul>
+<pre><code class="language-shell">java -Xmx3550m -Xms3550m -Xss128k -XX:NewRatio=4 -XX:SurvivorRatio=4 
+</code></pre>
+<ul>
+<li><code>-XX:NewRatio=4</code>：设置年轻代（包括Eden和两个Survivor区）与年老代的比值（除去持久代）。设置为4，则年轻代与年老代所占比值为1：4，年轻代占整个堆栈的1/5</li>
+<li><code>-XX:SurvivorRatio=4</code>：设置年轻代中Eden区与Survivor区的大小比值。设置为4，则两个Survivor区与一个Eden区的比值为2:4，一个Survivor区占整个年轻代的1/6</li>
+<li><code>-XX:MaxTenuringThreshold=0</code>：设置垃圾最大年龄。如果设置为0的话，则年轻代对象不经过Survivor区，直接进入年老代。对于年老代比较多的应用，可以提高效率。如果将此值设置为一个较大值，则年轻代对象会在Survivor区进行多次复制，这样可以增加对象再年轻代的存活时间，增加在年轻代即被回收的概论。</li>
+</ul>
+<h2 id="回收器选择">回收器选择</h2>
+<p>JVM给了三种选择：串行收集器、并行收集器、并发收集器，但是串行收集器只适用于小数据量的情况，所以这里的选择主要针对并行收集器和并发收集器。默认情况下，Java 5以前都是使用串行收集器，如果想使用其他收集器需要在启动时加入相应参数。JDK5.0以后，JVM会根据当前系统配置进行判断。</p>
+<h3 id="吞吐量优先的并行收集器">吞吐量优先的并行收集器</h3>
+<p>如上文所述，并行收集器主要以到达一定的吞吐量为目标，适用于科学技术和后台处理等。<br>
+典型配置：</p>
+<pre><code class="language-shell">java -Xmx3800m -Xms3800m -Xmn2g -Xss128k -XX:+UseParallelGC -XX:ParallelGCThreads=20
+</code></pre>
+<ul>
+<li><code>-XX:+UseParallelGC</code>：选择并行收集器。此配置仅对年轻代有效。即上述配置下，年轻代使用并发收集，而年老代仍旧使用串行收集。</li>
+<li><code>-XX:ParallelGCThreads=20</code>：配置并行收集器的线程数，即：同时多少个线程一起进行垃圾回收。此值最好配置与处理器数目相等。</li>
+</ul>
+<pre><code> java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC -XX:ParallelGCThreads=20 -XX:+UseParallelOldGC
+</code></pre>
+<ul>
+<li><code>-XX:+UseParallelOldGC</code>：配置年老代垃圾收集方式为并行收集。JDK6.0支持对年老代并行收集。</li>
+</ul>
+<pre><code class="language-shell">java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC -XX:MaxGCPauseMillis=100
+</code></pre>
+<ul>
+<li><code>-XX:MaxGCPauseMillis=100</code>：设置每次年轻代垃圾回收的最长时间，如果无法满足此时间，JVM会自动调整年轻代大小，以满足此值。</li>
+</ul>
+<pre><code class="language-shell">java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC -XX:MaxGCPauseMillis=100 -XX:+UseAdaptiveSizePolicy
+</code></pre>
+<p><code>-XX:+UseAdaptiveSizePolicy</code>：设置此选项后，并行收集器会自动选择年轻代区大小和相应的Survivor区比例，以达到目标系统规定的最低相应时间或者收集频率等，此值建议使用并行收集器时，一直打开。</p>
+<h3 id="响应时间优先的并发收集器">响应时间优先的并发收集器</h3>
+<p>如上文所述，并发收集器主要是保证系统的响应时间，减少垃圾收集时的停顿时间。适用于应用服务器、电信领域等。<br>
+典型配置：</p>
+<pre><code class="language-shell">java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:ParallelGCThreads=20 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC
+</code></pre>
+<ul>
+<li><code>-XX:+UseConcMarkSweepGC</code>：设置年老代为并发收集。测试中配置这个以后，<code>-XX:NewRatio=4</code>的配置失效了，原因不明。所以，此时年轻代大小最好用-Xmn设置。</li>
+<li><code>-XX:+UseParNewGC</code>：设置年轻代为并行收集。可与CMS收集同时使用。JDK5.0以上，JVM会根据系统配置自行设置，所以无需再设置此值。</li>
+</ul>
+<pre><code class="language-shell">java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseConcMarkSweepGC -XX:CMSFullGCsBeforeCompaction=5 -XX:+UseCMSCompactAtFullCollection
+</code></pre>
+<ul>
+<li><code>-XX:CMSFullGCsBeforeCompaction</code>：由于并发收集器不对内存空间进行压缩、整理，所以运行一段时间以后会产生“碎片”，使得运行效率降低。此值设置运行多少次GC以后对内存空间进行压缩、整理。</li>
+<li><code>-XX:+UseCMSCompactAtFullCollection</code>：打开对年老代的压缩。可能会影响性能，但是可以消除碎片</li>
+</ul>
+<h2 id="辅助信息">辅助信息</h2>
+<p>JVM提供了大量命令行参数，打印信息，供调试使用。主要有以下一些：</p>
+<h3 id="-xxprintgc"><code>-XX:+PrintGC</code></h3>
+<p>输出形式：[GC 118250K-&gt;113543K(130112K), 0.0094143 secs]<br>
+[Full GC 121376K-&gt;10414K(130112K), 0.0650971 secs]</p>
+<h3 id="-xxprintgcdetails"><code>-XX:+PrintGCDetails</code></h3>
+<p>输出形式：[GC [DefNew: 8614K-&gt;781K(9088K), 0.0123035 secs] 118250K-&gt;113543K(130112K), 0.0124633 secs]<br>
+[GC [DefNew: 8614K-&gt;8614K(9088K), 0.0000665 secs][Tenured: 112761K-&gt;10414K(121024K), 0.0433488 secs] 121376K-&gt;10414K(130112K), 0.0436268 secs]</p>
+<h3 id="-xxprintgctimestamps"><code>-XX:+PrintGCTimeStamps</code></h3>
+<p>PrintGCTimeStamps可与上面两个混合使用<br>
+输出形式：11.851: [GC 98328K-&gt;93620K(130112K), 0.0082960 secs]</p>
+<h3 id="-xxprintgcapplicationconcurrenttime"><code>-XX:+PrintGCApplicationConcurrentTime</code></h3>
+<p>打印每次垃圾回收前，程序未中断的执行时间。可与上面混合使用<br>
+输出形式：Application time: 0.5291524 seconds</p>
+<h3 id="-xxprintgcapplicationstoppedtime"><code>-XX:+PrintGCApplicationStoppedTime</code></h3>
+<p>打印垃圾回收期间程序暂停的时间。可与上面混合使用<br>
+输出形式：Total time for which application threads were stopped: 0.0468229 seconds</p>
+<h3 id="-xxprintheapatgc"><code>-XX:PrintHeapAtGC</code></h3>
+<p>打印GC前后的详细堆栈信息，输出形式：<br>
+34.702: [GC {Heap before gc invocations=7:<br>
+def new generation total 55296K, used 52568K [0x1ebd0000, 0x227d0000, 0x227d0000)<br>
+eden space 49152K, 99% used [0x1ebd0000, 0x21bce430, 0x21bd0000)<br>
+from space 6144K, 55% used [0x221d0000, 0x22527e10, 0x227d0000)<br>
+to space 6144K, 0% used [0x21bd0000, 0x21bd0000, 0x221d0000)<br>
+tenured generation total 69632K, used 2696K [0x227d0000, 0x26bd0000, 0x26bd0000)<br>
+the space 69632K, 3% used [0x227d0000, 0x22a720f8, 0x22a72200, 0x26bd0000)<br>
+compacting perm gen total 8192K, used 2898K [0x26bd0000, 0x273d0000, 0x2abd0000)<br>
+the space 8192K, 35% used [0x26bd0000, 0x26ea4ba8, 0x26ea4c00, 0x273d0000)<br>
+ro space 8192K, 66% used [0x2abd0000, 0x2b12bcc0, 0x2b12be00, 0x2b3d0000)<br>
+rw space 12288K, 46% used [0x2b3d0000, 0x2b972060, 0x2b972200, 0x2bfd0000)<br>
+34.735: [DefNew: 52568K-&gt;3433K(55296K), 0.0072126 secs] 55264K-&gt;6615K(124928K)Heap after gc invocations=8:<br>
+def new generation total 55296K, used 3433K [0x1ebd0000, 0x227d0000, 0x227d0000)<br>
+eden space 49152K, 0% used [0x1ebd0000, 0x1ebd0000, 0x21bd0000)<br>
+from space 6144K, 55% used [0x21bd0000, 0x21f2a5e8, 0x221d0000)<br>
+to space 6144K, 0% used [0x221d0000, 0x221d0000, 0x227d0000)<br>
+tenured generation total 69632K, used 3182K [0x227d0000, 0x26bd0000, 0x26bd0000)<br>
+the space 69632K, 4% used [0x227d0000, 0x22aeb958, 0x22aeba00, 0x26bd0000)<br>
+compacting perm gen total 8192K, used 2898K [0x26bd0000, 0x273d0000, 0x2abd0000)<br>
+the space 8192K, 35% used [0x26bd0000, 0x26ea4ba8, 0x26ea4c00, 0x273d0000)<br>
+ro space 8192K, 66% used [0x2abd0000, 0x2b12bcc0, 0x2b12be00, 0x2b3d0000)<br>
+rw space 12288K, 46% used [0x2b3d0000, 0x2b972060, 0x2b972200, 0x2bfd0000)<br>
+}<br>
+, 0.0757599 secs]</p>
+<h3 id="-xloggcfilename">-Xloggc:filename</h3>
+<p>与上面几个配合使用，把相关日志信息记录到文件以便分析。</p>
+<h2 id="常见配置汇总">常见配置汇总</h2>
+<h3 id="堆设置">堆设置</h3>
+<ul>
+<li>-Xms:初始堆大小</li>
+<li>-Xmx:最大堆大小</li>
+<li>-XX:NewSize=n:设置年轻代大小</li>
+<li>-XX:NewRatio=n:设置年轻代和年老代的比值。如:为3，表示年轻代与年老代比值为1：3，年轻代占整个年轻代年老代和的1/4</li>
+<li>-XX:SurvivorRatio=n:年轻代中Eden区与两个Survivor区的比值。注意Survivor区有两个。如：3，表示Eden：Survivor=3：2，一个Survivor区占整个年轻代的1/5</li>
+<li>-XX:MaxPermSize=n:设置持久代大小</li>
+</ul>
+<h4 id="优先级">优先级</h4>
+<p>-Xmn，-XX:NewSize/-XX:MaxNewSize，-XX:NewRatio 3组参数都可以影响年轻代的大小，混合使用的情况下，优先级如下：</p>
+<ul>
+<li>高优先级：-XX:NewSize/-XX:MaxNewSize</li>
+<li>中优先级：-Xmn（默认等效 -Xmn=-XX:NewSize=-XX:MaxNewSize=?）</li>
+<li>低优先级：-XX:NewRatio</li>
+</ul>
+<h3 id="收集器设置">收集器设置</h3>
+<ul>
+<li>-XX:+UseSerialGC:设置串行收集器</li>
+<li>-XX:+UseParallelGC:设置并行收集器</li>
+<li>-XX:+UseParalledlOldGC:设置并行年老代收集器</li>
+<li>-XX:+UseConcMarkSweepGC:设置并发收集器</li>
+</ul>
+<h4 id="并行收集器设置">并行收集器设置</h4>
+<ul>
+<li>-XX:ParallelGCThreads=n:设置并行收集器收集时使用的CPU数。并行收集线程数。</li>
+<li>-XX:MaxGCPauseMillis=n:设置并行收集最大暂停时间</li>
+<li>-XX:GCTimeRatio=n:设置垃圾回收时间占程序运行时间的百分比。公式为1/(1+n)</li>
+</ul>
+<h4 id="并发收集器设置">并发收集器设置</h4>
+<ul>
+<li>-XX:+CMSIncrementalMode:设置为增量模式。适用于单CPU情况。</li>
+<li>-XX:ParallelGCThreads=n:设置并发收集器年轻代收集方式为并行收集时，使用的CPU数。</li>
+</ul>
+<h4 id="垃圾回收统计信息">垃圾回收统计信息</h4>
+<ul>
+<li>-XX:+PrintGC</li>
+<li>-XX:+PrintGCDetails</li>
+<li>-XX:+PrintGCTimeStamps</li>
+<li>-Xloggc:filename</li>
+</ul>
+<h2 id="调优总结">调优总结</h2>
+<h3 id="年轻代大小选择">年轻代大小选择</h3>
+<ul>
+<li>响应时间优先的应用：尽可能设大，直到接近系统的最低响应时间限制（根据实际情况选择）。在此种情况下，年轻代收集发生的频率也是最小的。同时，减少到达年老代的对象。</li>
+<li>吞吐量优先的应用：尽可能的设置大，可能到达Gbit的程度。因为对响应时间没有要求，垃圾收集可以并行进行，一般适合8CPU以上的应用。</li>
+</ul>
+<h3 id="年老代大小选择">年老代大小选择</h3>
+<ul>
+<li>响应时间优先的应用：年老代使用并发收集器，所以其大小需要小心设置，一般要考虑并发会话率和会话持续时间等一些参数。如果堆设置小了，可以会造成内存碎片、高回收频率以及应用暂停而使用传统的标记清除方式；如果堆大了，则需要较长的收集时间。最优化的方案，一般需要参考以下数据获得：</li>
+<li>并发垃圾收集信息</li>
+<li>持久代并发收集次数</li>
+<li>传统GC信息</li>
+<li>花在年轻代和年老代回收上的时间比例，减少年轻代和年老代花费的时间，一般会提高应用的效率</li>
+<li>吞吐量优先的应用：一般吞吐量优先的应用都有一个很大的年轻代和一个较小的年老代。原因是，这样可以尽可能回收掉大部分短期对象，减少中期的对象，而年老代尽存放长期存活对象。</li>
+</ul>
+<h3 id="较小堆引起的碎片问题">较小堆引起的碎片问题</h3>
+<p>因为年老代的并发收集器使用标记、清除算法，所以不会对堆进行压缩。当收集器回收时，他会把相邻的空间进行合并，这样可以分配给较大的对象。但是，当堆空间较小时，运行一段时间以后，就会出现“碎片”，如果并发收集器找不到足够的空间，那么并发收集器将会停止，然后使用传统的标记、清除方式进行回收。如果出现“碎片”，可能需要进行如下配置：</p>
+<ul>
+<li>-XX:+UseCMSCompactAtFullCollection：使用并发收集器时，开启对年老代的压缩。</li>
+<li>-XX:CMSFullGCsBeforeCompaction=0：上面配置开启的情况下，这里设置多少次Full GC后，对年老代进行压缩</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://www.iteye.com/blog/unixboy-174173">JVM调优总结 -Xms -Xmx -Xmn -Xss</a></li>
+<li><a href="https://blog.csdn.net/sivyer123/article/details/17139443">JVM 堆内存设置原理</a></li>
+</ul>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/Ke7gk0EO5/">
+            <span class="flex-auto">Java</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/kakfa-efficient-rw/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  Kafka的高效读写
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/jpa/">
+                <h3 class="post-title">
+                  Java持久化API
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

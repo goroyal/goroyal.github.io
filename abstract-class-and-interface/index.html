@@ -1,0 +1,479 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E6%8A%BD%E8%B1%A1%E7%B1%BB">抽象类</a></li>
+<li><a href="#%E6%8E%A5%E5%8F%A3">接口</a>
+<ul>
+<li><a href="#%E7%A9%BA%E6%8E%A5%E5%8F%A3">空接口</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E6%AF%94%E8%BE%83">接口和抽象类比较</a>
+<ul>
+<li><a href="#%E7%9B%B8%E5%90%8C%E7%82%B9">相同点</a></li>
+<li><a href="#%E5%8C%BA%E5%88%AB">区别</a></li>
+<li><a href="#%E6%8E%A5%E5%8F%A3%E7%BB%A7%E6%89%BF">接口继承</a></li>
+<li><a href="#%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB">类与接口的继承关系</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8E%A5%E5%8F%A3%E9%87%8C%E7%9A%84%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95">接口里的默认方法</a>
+<ul>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BC%95%E5%85%A5%E9%BB%98%E8%AE%A4%E6%96%B9%E6%B3%95">为什么引入默认方法</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Java 抽象类和接口</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2017-10-14 / 9 min read
+        </div>
+        
+        <div class="post-content yue">
+          <p>本文亦发布于<a href="https://thinkbucket.cn/docs/java/object-oriented-programming/abstract-class-interface">ThinkBucket</a>。</p>
+<p>抽象类和接口是 Java 面向对象编程中非常重要的元素，在面向接口的编程中两者更是经常用到。类是对象的模版，抽象类和接口可以看作是具体的类的模版。</p>
+<!-- more -->
+<h2 id="抽象类">抽象类</h2>
+<p>如果一个 <code>class</code> 用 <code>abstract</code>修饰，它就是抽象类。除了正常的方法定义外，抽象类里的方法可以是空的，直接以分号结尾，没有具体执行代码，这个方法就是抽象方法，它必须用 <code>abstract</code> 修饰。</p>
+<p>我们无法实例化一个抽象类，抽象类必须通过一个具体的子类实例化：</p>
+<pre><code class="language-java">Person p = new Person(); // 编译错误
+</code></pre>
+<pre><code class="language-java">public final class Demo {
+  public static void main(String[] args) {
+    Teacher t = new Teacher();
+    t.setName(&quot;王明&quot;);
+    t.work();
+    Driver d = new Driver();
+    d.setName(&quot;小陈&quot;);
+    d.work();
+  }
+}
+// 定义一个抽象类
+abstract class People {
+  private String name; // 实例变量
+  // 共有的 setter 和 getter 方法
+  public void setName(String name){
+    this.name = name;
+  }
+  public String getName(){
+    return this.name;
+  }
+  // 抽象方法
+  public abstract void work();
+}
+
+class Teacher extends People {
+  // 必须实现该方法
+  public void work() {
+    System.out.println(&quot;我的名字叫&quot; + this.getName() + &quot;，我正在讲课，请大家不要东张西望…&quot;);
+  }
+}
+
+class Driver extends People {
+  // 必须实现该方法
+  public void work() {
+    System.out.println(&quot;我的名字叫&quot; + this.getName() + &quot;，我正在开车，不能接听电话…&quot;);
+  }
+}
+</code></pre>
+<p>除了可以拥有抽象方法和不能实例化的特性外，抽象类拥有普通类的所有特点，比如：</p>
+<ul>
+<li>可以继承父类（但抽象类的父类必须是抽象类）</li>
+<li>可以实现接口</li>
+<li>可以写 <code>private</code> 、 <code>protected</code>、 <code>public</code> 的成员变量和方法</li>
+<li>可以写 <code>static final</code> 的常量</li>
+</ul>
+<h2 id="接口">接口</h2>
+<p>接口一般是描述一些行为，是对接口使用者的一个承诺。在面向接口的编程中，接口的使用者只需要调用接口的某个方法达到其目的，而无需关心是哪个类实现的。接口的一个例子：</p>
+<pre><code class="language-java">interface Person {
+  void run();
+  String getName();
+}
+</code></pre>
+<p>接口的一些特性：</p>
+<ul>
+<li>所有方法都是 <code>public abstract</code> 的，必须被接口的实现类实现（Java 8之前）</li>
+<li>所有的变量都是 <code>public static final</code> 的，其实就是常量</li>
+</ul>
+<p>:::<strong>tip</strong></p>
+<blockquote>
+<p>因为接口定义的所有方法默认都是 <code>public abstract</code> 的，所以这两个修饰符不需要写出来（写不写效果都一样）。</p>
+</blockquote>
+<p>当一个具体的 <code>class</code> 去实现一个 <code>interface</code> 时，需要使用 <code>implements</code> 关键字。举个例子：</p>
+<pre><code class="language-java">class Student implements Person {
+  private String name;
+
+  public Student(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public void run() {
+    System.out.println(this.name + &quot; run&quot;);
+  }
+
+  @Override
+  public String getName() {
+    return this.name;
+  }
+}
+</code></pre>
+<h3 id="空接口">空接口</h3>
+<p>我们常常看到 Java 程序里有定义的一些空接口，那么空接口是什么作用呢？</p>
+<p>空接口的主要是用来做判断的，也就是作为一个标记。为了判断某一个类是否满足其筛选条件时可以做一个空接口，然后利用 <code>instanceof</code> 方法来判断某一类是否使用了该接口，以达到你要筛选指定类型类的需求。</p>
+<h2 id="接口和抽象类比较">接口和抽象类比较</h2>
+<h3 id="相同点">相同点</h3>
+<p>从某种角度讲，接口是一种特殊的抽象类，它们有很大的相似处：</p>
+<ul>
+<li>都代表类树形结构的抽象层。在使用引用变量时，尽量使用类结构的抽象层，<strong>使方法的定义和实现分离</strong>，这样做对于代码有松散耦合的好处。</li>
+<li>都不能被实例化。</li>
+</ul>
+<ul>
+<li>都能包含抽象方法。</li>
+</ul>
+<h3 id="区别">区别</h3>
+<ul>
+<li>接口里只能有常量，而且会“污染”实现类里的作用域；抽象类可以拥有 <code>private</code> 的变量，有一定程度的封装。</li>
+<li>接口只能继承接口；抽象类既可以继承抽象类，也可以实现接口。</li>
+<li>接口里的所有方法使用者都能直接调用；抽象类里可以封装一些 <code>private</code>、<code>protected</code> 或者包访问级别的方法</li>
+<li>接口里的所有方法都是抽象的，没有方法体（Java 8 之前）；抽象类里的非抽象方法可以拥有方法体。</li>
+<li>一个实现类一旦继承了某个抽象类，可以实现别的接口，但是不能继承其他类了；而如果它实现了某个接口，还可以实现别的接口，也可以继承别的类。体为空），但抽象类实现某个接口，可以不实现所有接口的方法，可以由它的子类实现。</li>
+<li>接口是对行为的一种抽象，而抽象类是对类的抽象，包括属性、方法。继承抽象类的类往往是具有一些相似特点的类，而实现接口的类可以跨不同的域，仅仅实现了接口定义的契约。类继承抽象类像是一个 <strong>”is-a”</strong> 特点，类实现接口像是 <strong>”like-a”</strong> 特点。</li>
+<li>在设计时，对接口往往是自上而下的，先定义接口行为，然后再针对其做具体实现；抽象类往往是自下而上的，我们先知道子类后才对其进行抽象出父类。</li>
+</ul>
+<pre><code class="language-java">class Student implements Person, Hello { // 实现了两个interface
+  ...
+}
+</code></pre>
+<h3 id="接口继承">接口继承</h3>
+<p>一个 <code>interface</code> 可以使用 <code>extends</code> 继承自另一个 <code>interface</code> 。例如：</p>
+<pre><code class="language-java">interface Hello {
+  void hello();
+}
+
+interface Person extends Hello {
+  void run();
+  String getName();
+}
+</code></pre>
+<p>此时， <code>Person</code> 接口继承自 <code>Hello</code> 接口，因此， <code>Person</code> 接口现在实际上有 3 个抽象方法签名，其中一个来自继承的 <code>Hello</code> 接口。</p>
+<h3 id="类与接口的继承关系">类与接口的继承关系</h3>
+<p>合理设计 interface 和 abstract class 的继承关系，可以充分复用代码。一般来说，公共逻辑适合放在 abstract class 中，具体逻辑放到各个子类，而接口层次代表抽象程度。可以参考 Java 的集合类定义的一组接口、抽象类以及具体子类的继承关系：</p>
+<Img w="380" src='https://cosmos-x.oss-cn-hangzhou.aliyuncs.com/rt4hsL.png' />
+<p>在使用的时候，实例化的对象永远只能是某个具体的子类，但总是通过接口去引用它，因为接口比抽象类更抽象：</p>
+<pre><code class="language-java">List list = new ArrayList(); // 用List接口引用具体子类的实例
+Collection coll = list; // 向上转型为Collection接口
+Iterable it = coll; // 向上转型为Iterable接口
+</code></pre>
+<h2 id="接口里的默认方法">接口里的默认方法</h2>
+<p>从 Java 8 开始，Java 为接口提供了默认方法的功能，用 <code>default</code> 关键字表示，比如：</p>
+<pre><code class="language-java">interface InterfaceA {
+  default void foo() {
+    System.out.println(&quot;InterfaceA foo&quot;);
+  }
+}
+
+class ClassA implements InterfaceA {
+}
+
+public class Test {
+  public static void main(String[] args) {
+    new ClassA().foo(); // Will print &quot;InterfaceA foo&quot;
+  }
+}
+</code></pre>
+<p><code>ClassA</code> 没有实现 <code>InterfaceA</code> 的 <code>foo</code> 方法，但是 <code>InterfaceA</code> 提供了默认实现，当 <code>ClassA</code> 的实例调用到 <code>foo</code> 方法时，实际上是调用了接口里的默认实现。</p>
+<h3 id="为什么引入默认方法">为什么引入默认方法</h3>
+<p><strong>在 Java 8 之前</strong>，接口和实现类之间高度耦合，当接口中添加一个方法时，它的所有实现类都需要修改，否则会发生编译错误。无法在不破坏现有实现的条件下向接口添加<strong>新</strong>方法。</p>
+<p>:::<strong>tip</strong></p>
+<blockquote>
+<p>To use default method, JDK &gt;= 1.8 is a must.</p>
+</blockquote>
+<p>在 Java 8 里面，引入默认方法的意图是<strong>允许向现有接口添加方法</strong>，Java 8 里有一个重要新功能： lamda 表达式，这需要升级旧接口并保持向后兼容。</p>
+<pre><code class="language-java">String[] array = new String[] {
+  &quot;hello&quot;,
+  &quot;, &quot;,
+  &quot;world&quot;,
+};
+List&lt;String&gt; list = Arrays.asList(array);
+list.forEach(System.out::println); // additional method in JDK 1.8
+</code></pre>
+<p><code>forEach</code> 方法是 Java 8 里为 <code>Iterable</code> 接口添加的新默认方法，实现类不需要做任何修改就可以直接用它。下面是 <code>Iterable</code> 接口里的 <code>forEach</code> 方法：</p>
+<pre><code class="language-java">package java.lang;
+
+import java.util.Objects;
+import java.util.function.Consumer;
+
+public interface Iterable&lt;T&gt; {
+  default void forEach(Consumer&lt;? super T&gt; action) {
+    Objects.requireNonNull(action);
+    for (T t : this) {
+      action.accept(t);
+    }
+  }
+}
+</code></pre>
+<p>更多细节，可以参考这篇文章：https://ebnbin.com/2015/12/20/java-8-default-methods/</p>
+<p>:::<strong>caution</strong></p>
+<blockquote>
+<p>向现有接口添加新方法充满了风险。在存在默认方法的情况下，接口的现有实现<strong>可能</strong>编译没有错误或警告，但在运行时会失败。</p>
+</blockquote>
+<p>:::<strong>good</strong></p>
+<blockquote>
+<p>除非有必要，否则应避免使用默认方法向现有接口添加新方法，在这种情况下，你应该认真考虑一下现有接口实现是否会被默认方法实现破坏。</p>
+</blockquote>
+<p>以上都是需要注意的，但是默认方法对于在创建接口时提供标准方法实现非常有用，它能简化实现接口的任务。</p>
+<h2 id="参考资料">参考资料</h2>
+<ol>
+<li><a href="https://book.douban.com/subject/30412517/">Effective Java, By Joshua Bloch</a></li>
+<li><a href="https://ebnbin.com/2015/12/20/java-8-default-methods/">Java 8 Default Methods, By Ebn Zhang</a></li>
+</ol>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/Ke7gk0EO5/">
+            <span class="flex-auto">Java</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/references-in-java/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  Java中的几种引用
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/add-icon-to-ubuntu-dash/">
+                <h3 class="post-title">
+                  Ubuntu中给Dash创建图标
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

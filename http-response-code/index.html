@@ -1,0 +1,320 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#1xx">1XX</a></li>
+<li><a href="#2xx">2XX</a></li>
+<li><a href="#3xx">3XX</a></li>
+<li><a href="#4xx">4XX</a></li>
+<li><a href="#5xx">5XX</a></li>
+<li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">HTTP 响应状态码</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2019-04-06 / 6 min read
+        </div>
+        
+        <div class="post-content yue">
+          <p>目前HTTP在Web开发中被广泛使用，REST (Representational State Transfer) 很多人应该或多或少都知道些。当然了，比较熟悉的可能主要是GET、POST方法。这篇文章不是介绍REST的定义和如何创建符合REST风格的API，而是讲讲在Web开发中通用的不同HTTP响应状态码的含义。在普通网站开发、分布式集群开发、团队协作方面，如果采用了HTTP作为组件之间交互的协议，遵守通用的响应状态码是很有必要的（一是有充分的信息量、二是避免歧义）。</p>
+<p>HTTP响应状态共有5大类，分别是数字1、2、3、4、5开头。</p>
+<!-- more -->
+<h2 id="1xx">1XX</h2>
+<p>信息性状态码，表示接收的请求正在处理。</p>
+<ul>
+<li>100：说明收到了请求的初始部分，请客户端继续。发送了这个状态码之后，服务器在收到请求之后必须进行响应</li>
+<li>101：说明服务器正在根据客户端的指定，将协议切换成Update 首部所列的协议</li>
+</ul>
+<h2 id="2xx">2XX</h2>
+<p>成功状态码，表示请求正常处理完毕</p>
+<ul>
+<li>200：OK，实体的主体部分包含了所请求的资源。（正常请求很多是这种状态）</li>
+<li>201： Created，表示创建资源成功，响应的实体主体部分中应该包含各种引用了已创建的资源的URL，Location 首部包含的则是最具体的引用。（REST里面，POST或者PUT常常返回这样的状态）</li>
+<li>202， Accepted， 请求已被接受，但服务器还未对其执行任何动作。不能保证服务器会完成这个请求；这只是意味着接受请求时，它看起来是有效的。</li>
+<li>204：No Content，响应不包含实体的主体部分，通常在更新服务器上资源的时候成功的情况下不要求返回实体内容就会产生这个状态码。</li>
+<li>206：Partial Content，成功执行了一个部分或Range（范围）请求。</li>
+</ul>
+<h2 id="3xx">3XX</h2>
+<p>重定向状态码，表示需要进行附加操作以完成请求。</p>
+<ul>
+<li>301：Moved Permanently，永久性重定向，表示请求的资源被分配了新的URI，以后应使用资源现在所指的URI。</li>
+<li>302：Found，临时性重定向，表示请求的资源被分配了新的URI，希望用户本次使用新的URI访问。</li>
+<li>303：See Other，表示请求对应的资源存在这另一个URI，应使用GET方法定向获取请求的资源。</li>
+<li>304：Not Modified，表示客户端发送附带条件的请求时，服务器端允许请求访问资源，但未满足条件。304状态码返回时不包含响应的主体部分（附带条件指：If-Match、If-Modified-Since、If-None-Match、If-Range、If-Unmodified-Since中任一首部）。304表明了客户端中所请求资源的缓存仍然是有效的,也就是说该资源从上次缓存到现在并没有被修改过.条件请求可以在确保客户端的资源是最新的同时避免因每次都请求完整资源给服务器带来的性能问题。另一种情况是,如果服务器认为客户端缓存的资源已经过期了，那么服务器就会返回HTTP/200 OK响应，响应体就是该资源当前最新的内容。客户端收到200响应后，就会用新的响应体覆盖掉旧的缓存资源。</li>
+<li>305：Use Proxy， 用来说明必须通过一个代理来访问资源；代理的位置由Location首部给出。很重要的一点是，客户端是相对某个特定资源来解析这条响应的，不能假定所有请求，甚至所有对持有所请求资源的服务器的请求都通过这个代理进行。如果客户端错误地让代理介入了某条请求，可能会引发破坏性的行为，而且会造成安全漏洞。</li>
+<li>307：Temporary Redirect，临时重定向，与302有相同的含义。尽管302标准禁止POST变幻成GET，实际大家并未遵守。307会遵照浏览器标准，不会从POST变为GET，但是对于处理响应时的行为每种浏览器可能出现不同的情况。</li>
+</ul>
+<h2 id="4xx">4XX</h2>
+<p>客户端错误状态码，表示服务器无法处理请求。</p>
+<ul>
+<li>400：Bad Request， 用于告知客户端它发送了一个错误的请求，比方说请求体不符合预先定义的规则</li>
+<li>401：Unauthorized，表示发送的请求需要有通过HTTP认证的认证信息，若之前已进行过请求，则表示认证失败。返回含有401的响应必须包含一个适用于被请求资源的WWW-Authenticate手部质询用户信息。</li>
+<li>403：Forbidden，表明请求资源的访问被服务器拒绝了。</li>
+<li>404：Not Found，用于说明服务器无法找到请求的URL所对应的资源。</li>
+<li>405：Method Not Allowed，发起的请求中带有所请求的URL 不支持的方法时，使用此状态码。应该在响应中包含Allow 首部，以告知客户端对所请求的资源可以使用哪些方法。</li>
+<li>406：Not Acceptable，客户端可以指定参数来说明它们愿意接收什么类型的实体。服务器没有与客户端可接受的URL 相匹配的资源时，使用此代码。</li>
+<li>413： Request Entity Too Large， 客户端发送的实体主体部分比服务器能够或者希望处理的要大时，返回此状态码。</li>
+<li>429：Too Many Requests，表示客户端在给定时间范围内发送了太多请求。</li>
+</ul>
+<h2 id="5xx">5XX</h2>
+<p>服务器错误状态码，表示服务器处理请求出错</p>
+<ul>
+<li>500：Intenernal Server Error，服务器在执行请求时发生了错误</li>
+<li>501：Not Implemented，客户端发起的请求超出服务器的能力范围（比如，使用了服务器不支持的请求方法）</li>
+<li>502：Bad Gateway， 作为代理或网关使用的服务器从请求响应链的下一条链路上收到了一条伪响应（比如，它无法连接到其父网关）。</li>
+<li>503：Service Unavailable 服务器暂时处于超负载或正在进行停机维护，现在无法处理请求。如果事先得知解除以上状况所需时间，最好写入Retry-After首部字段返回给客户端。</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul>
+<li>HTTP 权威指南</li>
+<li><a href="https://www.cnblogs.com/yuyii/archive/2008/10/16/1312238.html">HTTP头的Expires与Cache-control</a></li>
+</ul>
+
+        </div>
+
+        
+          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://goroyal.github.io/tag/T48Oi5XwY/">
+            <span class="flex-auto">HTTP</span>
+          </a>
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/wring-code-from-unit-test-side/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  以单元测试的角度聊聊写代码
+                </h3>
+              </a>
+            </div>
+          
+
+          
+            <div class="next-post">
+              <a href="https://goroyal.github.io/java-annotation/">
+                <h3 class="post-title">
+                  Java中的注解
+                  <i class="ri-arrow-right-line"></i>
+                </h3>
+              </a>
+            </div>
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>

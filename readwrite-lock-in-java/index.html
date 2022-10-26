@@ -1,0 +1,273 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>記路</title>
+<meta name="description" content="千里之行，始于足下。<br/>
+持续探索中……" />
+<link rel="shortcut icon" href="https://goroyal.github.io/favicon.ico?v=1666794232793">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+
+<link rel="stylesheet" href="https://goroyal.github.io/styles/main.css">
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main px-4 flex flex-col lg:flex-row">
+      <div id="sidebar" class="sidebar-wrapper lg:static lg:w-1/4">
+  <div class="lg:sticky top-0">
+    <div class="sidebar-content">
+      <div class="flex lg:block p-4 lg:px-0 items-center fixed lg:static lg:block top-0 right-0 left-0 bg-white z-50">
+        <i class="ri-menu-2-line lg:mt-4 text-2xl cursor-pointer animated fadeIn" onclick="openMenu()"></i>
+        <a href="https://goroyal.github.io">
+          <img class="animated fadeInLeft avatar rounded-lg mx-4 lg:mt-32 lg:mx-0 mt-0 lg:w-24 lg:h-24 w-12 w-12" src="https://goroyal.github.io/images/avatar.png?v=1666794232793" alt="">
+        </a>
+        <h1 class="animated fadeInLeft lg:text-4xl font-extrabold lg:mt-8 mt-0 text-xl" style="animation-delay: 0.2s">記路</h1>
+      </div>
+      
+        <div class="animated fadeInLeft" style="animation-delay: 0.4s">
+          <p class="my-4 text-gray-600 font-light hidden lg:block">
+            文章目录
+          </p>
+          <div class="toc-container hidden lg:block">
+            <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E">接口说明</a></li>
+<li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99">参考资料</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="menu-container">
+  <i class="ri-arrow-left-line text-2xl cursor-pointer animated fadeIn close-menu-btn" onclick="closeMenu()"></i>
+  <div>
+    
+      
+        <a href="/" class="menu" style="animation-delay: 0s">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu" style="animation-delay: 0.2s">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu" style="animation-delay: 0.4s">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu" style="animation-delay: 0.6000000000000001s">
+          关于
+        </a>
+      
+    
+      
+        <a href="/post/links" class="menu" style="animation-delay: 0.8s">
+          友链
+        </a>
+      
+    
+  </div>
+  <div class="site-footer">
+    <div class="py-4 text-gray-700">Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | © 2022 翊廷</div>
+    <a class="rss" href="https://goroyal.github.io/atom.xml" target="_blank">RSS</a>
+  </div>
+</div>
+<div class="mask" onclick="closeMenu()">
+</div>
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
+        <h1 class="text-3xl font-bold lg:mt-16">Java中的ReadWriteLock</h1>
+        <div class="text-sm text-gray-700 lg:my-8">
+          2015-08-06 / 4 min read
+        </div>
+        
+        <div class="post-content yue">
+          <p><code>ReadWriteLock</code>是<code>java.util.concurrent.locks</code>下面的接口，其内部方法结构如下：</p>
+<pre><code class="language-Java">public interface ReadWriteLock{
+	Lock readLock();
+	Lock writeLock();
+}
+</code></pre>
+<h2 id="接口说明">接口说明</h2>
+<p>一个<code>ReadWriteLock</code>维护一组关联的锁，一个用于只读的操作，另一个用来写。读锁可以被多个读线程同时持有，只要当前没有写线程。而写锁是排它的。</p>
+<p><code>ReadWriteLock</code>的所有实现必须保证<code>writeLock</code>操作的内存同步影响（在<code>Lock</code>接口中定义的），也保持关联的<code>readLock</code>的影响。也就是说，一个成功获取读锁的线程将看到写锁之前版本所做的所有更新。</p>
+<p>读写锁访问共享数据比允许一个排它锁的并发性大很多。它利用一次只有一个线程可以修改共享数据，大多数情况下任意数量可以同步读取数据的现实（所以叫读线程）。理论上，允许读写锁的使用对并发性的提高将导致比使用一个排它锁带来性能提升。在实践中，这个并发改善只有在多处理器上能够完全实现，并且只有共享数据的访问模式是合适的。</p>
+<p>读写锁与排它锁是否提高性能取决于数据被读以及被修改的频率比较，读和写操作的持续时间，以及数据的争用情况——也就是说，同一时间尝试去读或尝试去写数据的线程的数量。例如，最初填充数据的集合此后很少被修改，而且频繁被搜索（比如一个目录），这就是读写锁使用的理想选择。但是，如果更新变的频繁，那么数据花费大量时间被排它锁定，那么就很少有并发上的提升。而且，如果读操作时间太短，读写锁实现的开销（读写锁所固有的比一个排它锁更复杂）可能在执行消耗中占主要部分，尤其是很多读写锁实现仍然通过一小段代码序列化所有线程。最终，只有分析和测量才能确定使用读写锁是否适合于你的应用。</p>
+<p>尽管读写锁的基本操作是很简单，实现需要做出很多政策决定，这个将影响给定应用中的读写锁的效率。这些政策包括：</p>
+<ul>
+<li>当写线程释放写锁时，此时有读线程和写线程都在等待，确定是授权读锁还是写锁。通常倾向于给写线程，因为写操作一般比较短而且不频繁。通常不倾向于给读线程，因为如一般情况下那样如果读线程频繁写存活时间长读操作可能导致写的时间延迟。公平的讲，或者“按照顺序”的实现也是可以的。</li>
+<li>当一个读线程活跃且一个写线程等待时，确定是否有读线程请求读锁，然后授权读锁。倾向于给读线程可能使得写线程无限期延迟，而倾向于写线程可能减少并发的潜力。</li>
+<li>确定锁是否是可重入的：一个带写锁的线程能否重复获取写锁？当持有写锁的时候能否获取读锁？读锁本身是否可重入？</li>
+<li>写锁能否在不允许干预写线程的情况下降级到读锁？读锁能否升级到写锁，优先于其他等待的读线程和写线程？</li>
+</ul>
+<p>你应该在评估你应用的给定实现时考虑以上全部4点。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>JDK 1.7源码</li>
+</ul>
+
+        </div>
+
+        
+
+
+        <div class="flex justify-between py-8">
+          
+            <div class="prev-post">
+              <a href="https://goroyal.github.io/reetrantlock-in-java/">
+                <h3 class="post-title">
+                  <i class="ri-arrow-left-line"></i>
+                  Java中的可重入锁ReetrantLock
+                </h3>
+              </a>
+            </div>
+          
+
+          
+        </div>
+
+        
+          
+
+          
+            <link rel="stylesheet" href="https://unpkg.com/disqusjs@1.1/dist/disqusjs.css">
+<script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+
+<div id="disqus_thread"></div>
+
+<script>
+
+var options = {
+  shortname: 'goroyal',
+  apikey: 'r9dXU1fOkcWyNblV18VDqkUFhxfhvQYuJoqDcv37JDV20Qdbm66t2gR6fe7JCC08',
+}
+if ('') {
+  options.api = ''
+}
+var dsqjs = new DisqusJS(options)
+
+</script>
+
+          
+        
+
+      </div>
+    </div>
+
+    <script src="https://goroyal.github.io/media/prism.js"></script>  
+<script>
+
+Prism.highlightAll()
+let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+// This should probably be throttled.
+// Especially because it triggers during smooth scrolling.
+// https://lodash.com/docs/4.17.10#throttle
+// You could do like...
+// window.addEventListener("scroll", () => {
+//    _.throttle(doThatStuff, 100);
+// });
+// Only not doing it here to keep this Pen dependency-free.
+
+window.addEventListener("scroll", event => {
+  let fromTop = window.scrollY;
+
+  mainNavLinks.forEach((link, index) => {
+    let section = document.getElementById(decodeURI(link.hash).substring(1));
+    let nextSection = null
+    if (mainNavLinks[index + 1]) {
+      nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+    }
+    if (section.offsetTop <= fromTop) {
+      if (nextSection) {
+        if (nextSection.offsetTop > fromTop) {
+          link.classList.add("current");
+        } else {
+          link.classList.remove("current");    
+        }
+      } else {
+        link.classList.add("current");
+      }
+    } else {
+      link.classList.remove("current");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  var lazyImages = [].slice.call(document.querySelectorAll(".post-feature-image.lazy"));
+
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target
+          lazyImage.style.backgroundImage = `url(${lazyImage.dataset.bg})`
+          lazyImage.classList.remove("lazy")
+          lazyImageObserver.unobserve(lazyImage)
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage)
+    })
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+});
+
+const menuContainer = document.querySelector('.menu-container')
+const menus = document.querySelectorAll('.menu-container .menu')
+const mask = document.querySelector('.mask')
+const contentWrapper = document.querySelector('.content-wrapper')
+const latestArticle = document.querySelector('.latest-article')
+const readMore = document.querySelector('.read-more')
+const indexPage = document.querySelector('.index-page')
+
+const isHome = location.pathname === '/'
+if (latestArticle) {
+  latestArticle.style.display = isHome ? 'block' : 'none'
+  readMore.style.display = isHome ? 'block' : 'none'
+  indexPage.style.display = isHome ? 'none' : 'block'
+}
+
+const openMenu = () => {
+  menuContainer.classList.add('open')
+  menus.forEach(menu => {
+    menu.classList.add('animated', 'fadeInLeft')
+  })
+  mask.classList.add('open')
+  contentWrapper.classList.add('is-second')
+}
+
+const closeMenu = () => {
+  menuContainer.classList.remove('open')
+  menus.forEach(menu => {
+    menu.classList.remove('animated', 'fadeInLeft')
+  })
+  mask.classList.remove('open')
+  contentWrapper.classList.remove('is-second')
+}
+</script>
+  
+  </body>
+</html>
